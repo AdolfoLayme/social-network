@@ -1,0 +1,40 @@
+<div class="pagina-principal">
+  <div class="seccion-hero">
+    <div class="superposicion">
+      <h1>ArguSocial</h1>
+      <p>Tu espacio universitario para conectar, aprender y crecer. Bienvenido a la red social de los estudiantes.</p>
+    </div>
+    <!-- Formulario de inicio de sesión -->
+    <div class="formulario-login">
+      <h2>Iniciar Sesión</h2>
+      <form (ngSubmit)="onLogin()">
+        <div class="grupo-entrada">
+          <label for="correo">Correo Electrónico</label>
+          <input
+            type="email"
+            id="correo"
+            placeholder="Ingresa tu correo"
+            [(ngModel)]="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="grupo-entrada">
+          <label for="contrasena">Contraseña</label>
+          <input
+            type="password"
+            id="contrasena"
+            placeholder="Ingresa tu contraseña"
+            [(ngModel)]="password"
+            name="password"
+            required
+          />
+        </div>
+        <button type="submit" class="boton-primario">Iniciar Sesión</button>
+      </form>
+      <p class="enlace-registro">
+        ¿No tienes una cuenta? <a routerLink="/registro">Regístrate aquí</a>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,102 @@
+/* Página principal*/
+.pagina-principal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f6f8;
+  font-family: 'Arial', sans-serif; 
+}
+
+/* Sección principal */
+.seccion-hero {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+}
+
+.seccion-hero h1 {
+  font-size: 1.8rem;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.seccion-hero p {
+  font-size: 1rem;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+/* Formulario de inicio de sesión */
+.formulario-login {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.formulario-login h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+/* Grupo de entrada */
+.grupo-entrada {
+  margin-bottom: 20px;
+}
+
+.grupo-entrada label {
+  display: block;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  margin-bottom: 5px;
+}
+
+.grupo-entrada input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.grupo-entrada input::placeholder {
+  color: #bbb;
+}
+
+/* Botón principal (Iniciar Sesión) */
+.boton-primario {
+  width: 100%;
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  font-size: 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.boton-primario:hover {
+  background-color: #2980b9;
+}
+
+/* Enlace de registro */
+.enlace-registro {
+  margin-top: 15px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.enlace-registro a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.enlace-registro a:hover {
+  text-decoration: underline;
+}
