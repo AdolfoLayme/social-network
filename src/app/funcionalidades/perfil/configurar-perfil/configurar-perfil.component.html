@@ -1,0 +1,58 @@
+<div class="configuracion-perfil">
+    <form (ngSubmit)="guardarConfiguracion()">
+      <!-- Nombre -->
+      <div class="grupo-entrada">
+        <label for="nombre">Nombre</label>
+        <input
+          type="text"
+          id="nombre"
+          [(ngModel)]="nombre"
+          name="nombre"
+          placeholder="Ingresa tu nombre"
+          required
+        />
+      </div>
+  
+      <!-- Apellido -->
+      <div class="grupo-entrada">
+        <label for="apellido">Apellido</label>
+        <input
+          type="text"
+          id="apellido"
+          [(ngModel)]="apellido"
+          name="apellido"
+          placeholder="Ingresa tu apellido"
+          required
+        />
+      </div>
+  
+      <!-- Carrera -->
+      <div class="grupo-entrada">
+        <label for="carrera">Carrera</label>
+        <select id="carrera" [(ngModel)]="carrera" name="carrera" required>
+          <option *ngFor="let opcion of carreras" [value]="opcion">
+            {{ opcion }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Año Académico -->
+      <div class="grupo-entrada">
+        <label for="ano-academico">Año Académico</label>
+        <select
+          id="ano-academico"
+          [(ngModel)]="anoAcademico"
+          name="anoAcademico"
+          required
+        >
+          <option *ngFor="let ano of anoAcademicos" [value]="ano">
+            {{ ano }}
+          </option>
+        </select>
+      </div>
+  
+      <!-- Botón Guardar -->
+      <button type="submit" class="boton-guardar">Guardar</button>
+    </form>
+  </div>
+  

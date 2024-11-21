@@ -13,4 +13,7 @@ export const routes: Routes = [
   {
     path: 'registro', loadComponent: () => import('./funcionalidades/autenticacion/registro/registro.component').then((m) => m.RegistroComponent),
   },
+  {
+    path: 'configurar-perfil', loadComponent: () => import('./funcionalidades/perfil/configurar-perfil/configurar-perfil.component').then((m) => m.ConfigurarPerfilComponent),
+  },
 ];
