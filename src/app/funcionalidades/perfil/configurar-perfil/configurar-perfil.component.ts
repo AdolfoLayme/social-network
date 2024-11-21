@@ -16,7 +16,7 @@ export class ConfigurarPerfilComponent {
   apellido: string = '';
   carrera: string = '';
   anoAcademico: string = '';
-  fotoPerfil: string | ArrayBuffer | null = null; // Para mostrar la imagen
+  foto: string | null = null; 
 
   carreras: string[] = [
     'Ingeniería de Sistemas',
@@ -38,15 +38,19 @@ export class ConfigurarPerfilComponent {
     'Quinto Año'
   ]
 
-  cambiarFoto(event: Event): void {
+  seleccionarFoto() {
+    const inputElement = document.getElementById('input-foto-perfil') as HTMLInputElement;
+    inputElement.click(); 
+  }
+
+  subirFoto(event: Event) {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
-      const file = input.files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        this.fotoPerfil = reader.result; // Convertir la imagen a base64
+        this.foto = reader.result as string;
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(input.files[0]);
     }
   }
 
@@ -56,6 +60,7 @@ export class ConfigurarPerfilComponent {
     console.log('Apellido:', this.apellido);
     console.log('Carrera:', this.carrera);
     console.log('Año Académico:', this.anoAcademico);
+    console.log('Foto de Perfil:', this.foto ? 'Cargada' : 'Sin cargar');
   }
 
 }

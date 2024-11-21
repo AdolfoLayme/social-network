@@ -1,18 +1,19 @@
-<div class="foto-perfil-container">
-  <label for="foto-perfil-input">
+<div class="contenedor-foto-perfil">
+  <div class="foto-perfil-wrapper">
     <img
-      [src]=""
+      [src]="'/icons/icono-perfil.png'"
       alt="Foto de perfil"
       class="foto-perfil"
     />
-    <div class="subir-foto">
+    <!-- Botón flotante para cambiar foto -->
+    <div class="boton-cambiar-foto" (click)="seleccionarFoto()">
       Cambiar foto
     </div>
-  </label>
+  </div>
   <input
     type="file"
-    id="foto-perfil-input"
-    (change)="cambiarFoto($event)"
+    id="input-foto-perfil"
+    (change)="subirFoto($event)"
     accept="image/*"
     hidden
   />
