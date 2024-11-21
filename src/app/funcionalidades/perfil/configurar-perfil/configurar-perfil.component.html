@@ -1,3 +1,22 @@
+<div class="foto-perfil-container">
+  <label for="foto-perfil-input">
+    <img
+      [src]=""
+      alt="Foto de perfil"
+      class="foto-perfil"
+    />
+    <div class="subir-foto">
+      Cambiar foto
+    </div>
+  </label>
+  <input
+    type="file"
+    id="foto-perfil-input"
+    (change)="cambiarFoto($event)"
+    accept="image/*"
+    hidden
+  />
+</div>
 <div class="configuracion-perfil">
     <form (ngSubmit)="guardarConfiguracion()">
       <!-- Nombre -->

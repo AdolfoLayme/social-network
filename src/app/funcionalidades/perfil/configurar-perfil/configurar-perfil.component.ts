@@ -16,6 +16,7 @@ export class ConfigurarPerfilComponent {
   apellido: string = '';
   carrera: string = '';
   anoAcademico: string = '';
+  fotoPerfil: string | ArrayBuffer | null = null; // Para mostrar la imagen
 
   carreras: string[] = [
     'Ingeniería de Sistemas',
@@ -36,6 +37,18 @@ export class ConfigurarPerfilComponent {
     'Cuarto Año',
     'Quinto Año'
   ]
+
+  cambiarFoto(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoPerfil = reader.result; // Convertir la imagen a base64
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   guardarConfiguracion() {
     console.log('Configuración guardada:');

@@ -16,7 +16,7 @@ export class RegistroComponent {
 
   onRegister() {
     console.log('Registrando usuario:', this.nombre, this.email, this.password);
-    // Aquí implementaremos Firebase más adelante
+    // Aquí implementar Firebase más adelante
   }
 
 }
