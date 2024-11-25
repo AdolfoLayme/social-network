@@ -1,0 +1,82 @@
+<body>
+  <!-- Menú Lateral -->
+  <div class="menu-lateral">
+    <div class="logo">ArguSocial</div>
+    <ul class="menu-opciones">
+      <li>
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+      </li>
+      <li>
+        <i class="fas fa-user-circle"></i>
+        <span>Perfil</span>
+      </li>
+      <li>
+        <i class="fas fa-envelope"></i>
+        <span>Mensajes</span>
+      </li>
+      <li>
+        <i class="fas fa-bell"></i>
+        <span>Notificaciones</span>
+      </li>
+      <li>
+        <i class="fas fa-users"></i>
+        <span>Grupos de Estudio</span>
+      </li>
+    </ul>
+    <div class="foto-usuario">
+      <img [src]="usuario.fotoPerfil" alt="Foto de perfil" />
+      <div class="usuario-info">
+        <p class="nombre-usuario">{{ usuario.nombre }}</p>
+        <p class="handle">&#64;{{ usuario.handle }}</p>
+      </div>
+    </div>
+  </div> <!-- Cierre del menú lateral -->
+
+  <!-- Contenido -->
+  <div class="contenido">
+    <main class="main-content">
+      <!-- Crear Publicación -->
+      <div class="crear-post">
+        <img src="/icons/icono-perfil.png" alt="Foto de perfil" class="profile-pic" />
+        <textarea placeholder="¿Qué está pasando?"></textarea>
+        <div class="acciones-publicacion">
+          <button class="btn-imagen">
+            <i class="fas fa-image"></i> Imagen
+          </button>
+          <button class="btn-publicar">Publicar</button>
+        </div>
+      </div>
+
+      <!-- Feed de Publicaciones -->
+      <div class="posts">
+        <div class="post" *ngFor="let post of publicaciones">
+          <div class="post-header">
+            <img
+              [src]="post.usuarioImagen"
+              alt="Foto de perfil"
+              class="profile-pic"
+            />
+            <div class="post-info">
+              <p class="usuario">{{ post.usuario }}</p>
+              <p class="tiempo">Hace {{ post.tiempo }}</p>
+            </div>
+          </div>
+          <p class="descripcion">{{ post.descripcion }}</p>
+          <img [src]="post.imagen" alt="Publicación" class="post-image" />
+          <div class="post-footer">
+            <button class="btn-like">
+              <i class="fas fa-heart"></i> Me gusta
+            </button>
+            <button class="btn-comentar">
+              <i class="fas fa-comment"></i> Comentar
+            </button>
+            <button class="btn-compartir">
+              <i class="fas fa-share"></i> Compartir
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>

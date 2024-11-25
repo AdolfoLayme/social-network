@@ -16,4 +16,7 @@ export const routes: Routes = [
   {
     path: 'configurar-perfil', loadComponent: () => import('./funcionalidades/perfil/configurar-perfil/configurar-perfil.component').then((m) => m.ConfigurarPerfilComponent),
   },
+  {
+    path: 'feed', loadComponent: () => import('./funcionalidades/feed/feed/feed.component').then((m) => m.FeedComponent),
+  }
 ];
