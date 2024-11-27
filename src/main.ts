@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 bootstrapApplication(AppComponent, {
   ...appConfig,
   providers: [
-    ...(appConfig.providers || []), //Para no perder los proveedores actuales
-    importProvidersFrom(FormsModule), // FormsModule como proveedor
+    ...(appConfig.providers || []), 
+    importProvidersFrom(FormsModule), 
   ],
 }).catch((err) => console.error(err));
