@@ -1,0 +1,32 @@
+<div class="crear-post">
+    <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="profile-pic" />
+    <textarea placeholder="¿Qué está pasando?" [(ngModel)]="nuevaPublicacion"></textarea>
+    <div class="acciones-publicacion">
+      <input type="file" accept="image/*" id="imagenInput" (change)="seleccionarImagen($event)" style="display: none;" />
+      <label for="imagenInput" class="btn-imagen">
+        <i class="fas fa-image"></i> Imagen
+      </label>
+      <button class="btn-publicar" (click)="agregarPublicacion()">Publicar</button>
+    </div>
+    <img *ngIf="nuevaImagen" [src]="nuevaImagen" alt="Vista previa" class="vista-previa" />
+  </div>
+  
+  <div class="posts">
+    <div class="post" *ngFor="let post of publicaciones">
+      <div class="post-header">
+        <img [src]="post.usuarioImagen" alt="Foto de perfil" class="profile-pic" />
+        <div class="post-info">
+          <p class="usuario">{{ post.usuario }}</p>
+          <p class="tiempo">Hace {{ post.tiempo }}</p>
+        </div>
+      </div>
+      <p class="descripcion">{{ post.descripcion }}</p>
+      <img [src]="post.imagen" alt="Publicación" class="post-image" />
+      <div class="post-footer">
+        <button class="btn-like"><i class="fas fa-heart"></i> Me gusta</button>
+        <button class="btn-comentar"><i class="fas fa-comment"></i> Comentar</button>
+        <button class="btn-compartir"><i class="fas fa-share"></i> Compartir</button>
+      </div>
+    </div>
+  </div>
+  
