@@ -1,46 +1,46 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NgClass, NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { VerPerfilComponent } from '../../perfil/ver-perfil/ver-perfil.component';
+import { Router, RouterModule } from '@angular/router';
+import { PublicacionesComponent } from '../publicaciones/publicaciones.component';
+
 
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [NgFor, CommonModule, NgClass],
+  imports: [CommonModule, FormsModule, VerPerfilComponent, RouterModule, PublicacionesComponent],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css',
 })
 
 export class FeedComponent {
-  //simulacion de usuario
   usuario = {
     nombre: 'Adolfo',
     handle: 'Adolfo_Bonif',
-    fotoPerfil: '/icons/icono-perfil.png',
+    fotoPerfil: '/icons/icono-perfil.png'
   };
 
-  publicaciones = [
-    {
-      usuario: 'Adolfo Layme',
-      usuarioImagen: '/icons/icono-perfil.png',
-      imagen: 'assets/post1.jpg',
-      descripcion: '¡Hola! Esta es mi primera publicación.',
-      tiempo: 'Hace 5 minutos',
-    },
-    {
-      usuario: 'Estudiante Ingeniería',
-      usuarioImagen: '/icons/icono-perfil.png',
-      imagen: 'assets/post2.jpg',
-      descripcion: 'Preparando proyectos para fin de semestre...',
-      tiempo: 'Hace 1 hora', 
-    },
-    {
-      usuario: 'Otro Usuario',
-      usuarioImagen: '/icons/icono-perfil.png',
-      imagen: 'assets/post3.jpg',
-      descripcion: '¿Alguien sabe cómo resolver este problema?',
-      tiempo: 'Hace 2 horas', 
-    },
-  ];
+   // Propiedad para controlar la visibilidad del menú
+   menuVisible: boolean = false;
+
+   // Método para alternar la visibilidad del menú
+   toggleMenu(): void {
+     this.menuVisible = !this.menuVisible;
+   }
+ 
 
 
+  currentView: string = 'feed'; // Vista inicial
+
+  cambiarVista(vista: string): void {
+    this.currentView = vista; // Cambia entre 'feed' y 'perfil'
+  }
+  constructor(private router: Router) {}
+
+  // Navegar directamente con rutas configuradas
+  navegarAVista(ruta: string): void {
+    this.router.navigate([ruta]);
+  }
 }
