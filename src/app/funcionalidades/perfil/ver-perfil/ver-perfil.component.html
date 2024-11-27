@@ -1,0 +1,23 @@
+<div class="perfil">
+    <!-- Fondo del perfil -->
+    <div class="fondo-perfil" [style.backgroundImage]="'url(' + usuario.fondoPerfil + ')'">
+      <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="foto-perfil" />
+      <button class="btn-editar-perfil">Editar perfil</button>
+    </div>
+  
+    <!-- Información del usuario -->
+    <div class="info-usuario">
+      <h1>{{ usuario.nombre }}</h1>
+      <p class="handle">&#64;{{ usuario.handle }}</p>
+      <p class="biografia">{{ usuario.biografia }}</p>
+    </div>
+  
+    <!-- Publicaciones del usuario -->
+    <div class="publicaciones">
+      <div class="post" *ngFor="let post of usuario.publicaciones">
+        <p class="descripcion">{{ post.descripcion }}</p>
+        <p class="tiempo">{{ post.tiempo }}</p>
+      </div>
+    </div>
+  </div>
+  
