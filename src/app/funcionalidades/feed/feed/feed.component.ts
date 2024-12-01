@@ -2,15 +2,14 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { NgClass, NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { VerPerfilComponent } from '../../perfil/ver-perfil/ver-perfil.component';
 import { Router, RouterModule } from '@angular/router';
-import { PublicacionesComponent } from '../publicaciones/publicaciones.component';
+
 
 
 @Component({
   selector: 'app-feed',
   standalone: true,
-  imports: [CommonModule, FormsModule, VerPerfilComponent, RouterModule, PublicacionesComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './feed.component.html',
   styleUrl: './feed.component.css',
 })
@@ -32,10 +31,10 @@ export class FeedComponent {
  
 
 
-  currentView: string = 'feed'; // Vista inicial
+  currentView: string = 'feed'; 
 
   cambiarVista(vista: string): void {
-    this.currentView = vista; // Cambia entre 'feed' y 'perfil'
+    this.currentView = vista; 
   }
   constructor(private router: Router) {}
 

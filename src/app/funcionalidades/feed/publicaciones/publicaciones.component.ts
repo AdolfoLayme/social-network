@@ -20,6 +20,14 @@ export class PublicacionesComponent {
     { usuario: 'Adolfo Layme', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post1.jpg', descripcion: '¡Hola! Esta es mi primera publicación.', tiempo: 'Hace 5 minutos' },
     { usuario: 'Estudiante Ingeniería', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post2.jpg', descripcion: 'Preparando proyectos para fin de semestre...', tiempo: 'Hace 1 hora' },
     { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
+    
   ];
 
   nuevaPublicacion: string = '';

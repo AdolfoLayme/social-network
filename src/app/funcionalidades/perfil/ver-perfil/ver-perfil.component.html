@@ -1,23 +1,30 @@
 <div class="perfil">
-    <!-- Fondo del perfil -->
-    <div class="fondo-perfil" [style.backgroundImage]="'url(' + usuario.fondoPerfil + ')'">
-      <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="foto-perfil" />
-      <button class="btn-editar-perfil">Editar perfil</button>
-    </div>
-  
-    <!-- Información del usuario -->
-    <div class="info-usuario">
-      <h1>{{ usuario.nombre }}</h1>
-      <p class="handle">&#64;{{ usuario.handle }}</p>
-      <p class="biografia">{{ usuario.biografia }}</p>
-    </div>
-  
-    <!-- Publicaciones del usuario -->
-    <div class="publicaciones">
-      <div class="post" *ngFor="let post of usuario.publicaciones">
-        <p class="descripcion">{{ post.descripcion }}</p>
+  <!-- Fondo del perfil -->
+  <div class="fondo-perfil" [style.backgroundImage]="'url(' + usuario.fondoPerfil + ')'">
+    <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="foto-perfil" />
+  </div>
+
+  <!-- Información del usuario -->
+  <div class="info-usuario">
+    <h1>{{ usuario.nombre }}</h1>
+    <p class="handle">&#64;{{ usuario.handle }}</p>
+    <p class="biografia">{{ usuario.biografia }}</p>
+    <button class="btn-editar-perfil">Editar perfil</button>
+  </div>
+
+  <!-- Publicaciones del usuario -->
+  <div class="publicaciones">
+    <h2>Publicaciones</h2>
+    <div class="post" *ngFor="let post of usuario.publicaciones">
+      <div class="post-header">
+        <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="mini-foto-perfil" />
+        <p class="nombre-usuario">{{ usuario.nombre }}</p>
         <p class="tiempo">{{ post.tiempo }}</p>
+      </div>
+      <p class="descripcion">{{ post.descripcion }}</p>
+      <div class="post-media" *ngIf="post.imagen">
+        <img [src]="post.imagen" alt="Imagen del post" />
       </div>
     </div>
   </div>
-  
+</div>

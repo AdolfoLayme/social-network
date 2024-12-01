@@ -1,0 +1,116 @@
+/* Fondo del perfil */
+.fondo-perfil {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+  }
+  
+  .foto-perfil {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid #ffffff;
+    position: absolute;
+    bottom: -60px;
+    left: 20px;
+  }
+  
+  /* Información del usuario */
+  .info-usuario {
+    text-align: left;
+    padding: 80px 20px 20px;
+    position: relative; /* Necesario para posicionar el botón */
+  }
+  
+  .info-usuario h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #14171a;
+  }
+  
+  .info-usuario .handle {
+    font-size: 14px;
+    color: #657786;
+  }
+  
+  .info-usuario .biografia {
+    margin: 10px 0;
+    color: #14171a;
+  }
+  
+  /* Botón Editar perfil alineado a la derecha */
+  .btn-editar-perfil {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: #1da1f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .btn-editar-perfil:hover {
+    background: #1991e5;
+  }
+  
+  /* Publicaciones */
+  .publicaciones {
+    padding: 20px;
+    border-top: 1px solid #e1e8ed;
+  }
+  
+  .publicaciones h2 {
+    margin: 0 0 15px;
+    font-size: 20px;
+    color: #14171a;
+  }
+  
+  .post {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .post-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .mini-foto-perfil {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .nombre-usuario {
+    font-size: 16px;
+    font-weight: bold;
+    color: #14171a;
+  }
+  
+  .post .descripcion {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #14171a;
+  }
+  
+  .post .tiempo {
+    font-size: 12px;
+    color: #657786;
+  }
+  
+  .post-media img {
+    width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  

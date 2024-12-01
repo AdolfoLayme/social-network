@@ -20,21 +20,21 @@
         <span>Grupos de Estudio</span>
       </li>
     </ul>
-    <div class="foto-usuario">
+    <div class="foto-usuario" (click)="toggleMenu()">
       <img [src]="usuario.fotoPerfil" alt="Foto de perfil" />
       <div class="usuario-info">
         <p class="nombre-usuario">{{ usuario.nombre }}</p>
         <p class="handle">&#64;{{ usuario.handle }}</p>
-        <!-- Botón para abrir la ventana -->
-        <div class="opciones-usuario">
-          <button class="btn-opciones" (click)="toggleMenu()">...</button>
-          <div class="menu-opciones-usuario" *ngIf="menuVisible">
-            <ul>
-              <li>Agregar una cuenta existente</li>
-              <li>Cerrar la sesión de <span>{{ usuario.handle }}</span></li>
-            </ul>
-          </div>
-        </div>        
+      </div>
+      <!-- Menú emergente -->
+      <div
+        class="menu-opciones-usuario"
+        *ngIf="menuVisible"
+      >
+        <ul>
+          <li>Agregar una cuenta existente</li>
+          <li>Cerrar la sesión de <span>{{  usuario.handle }}</span></li>
+        </ul>
       </div>
     </div>
   </div>
