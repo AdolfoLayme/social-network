@@ -1,11 +1,11 @@
-/* Página principal*/
+/* Página principal */
 .pagina-principal {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-color: #f5f6f8;
-  font-family: 'Arial', sans-serif; 
+  font-family: 'Arial', sans-serif;
 }
 
 /* Sección principal */
@@ -98,5 +98,21 @@
 }
 
 .enlace-registro a:hover {
+  text-decoration: underline;
+}
+
+/* Enlace de recuperar contraseña */
+.enlace-recuperar {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.enlace-recuperar a {
+  color: #3498db;
+  text-decoration: none;
+}
+
+.enlace-recuperar a:hover {
   text-decoration: underline;
 }

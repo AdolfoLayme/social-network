@@ -1,0 +1,12 @@
+<div class="recuperar-clave">
+    <h3>Recuperar Contraseña</h3>
+    <p>Ingresa tu correo electrónico para enviar un enlace de recuperación:</p>
+    <input
+      type="email"
+      placeholder="Ingresa tu correo"
+      [(ngModel)]="email"
+      class="entrada-texto"
+    />
+    <button class="boton-primario" (click)="enviarRecuperacion()">Enviar</button>
+  </div>
+  

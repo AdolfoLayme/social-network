@@ -22,7 +22,7 @@
   .info-usuario {
     text-align: left;
     padding: 80px 20px 20px;
-    position: relative; /* Necesario para posicionar el botón */
+    position: relative; 
   }
   
   .info-usuario h1 {

@@ -4,6 +4,7 @@ import { FeedComponent } from './funcionalidades/feed/feed/feed.component';
 import { VerPerfilComponent } from './funcionalidades/perfil/ver-perfil/ver-perfil.component';
 import { GruposComponent } from './funcionalidades/feed/grupos/grupos.component';
 import { NotificacionesComponent } from './funcionalidades/feed/notificaciones/notificaciones.component';
+import { RecuperarClaveComponent } from './funcionalidades/autenticacion/recuperar-clave/recuperar-clave.component';
 
 
 export const routes: Routes = [
@@ -26,6 +27,9 @@ export const routes: Routes = [
     import('./funcionalidades/autenticacion/registro/registro.component').then(
       (m) => m.RegistroComponent
     ),
+},
+{ 
+  path: 'recuperar-clave', component: RecuperarClaveComponent
 },
 {
   path: 'configurar-perfil',
