@@ -1,7 +1,11 @@
 <div class="registro-page">
   <div class="registro-container">
     <h2>Crear Cuenta</h2>
-    <form (ngSubmit)="onRegister()">
+    <div *ngIf="cargando" class="spinner-container">
+      <div class="spinner"></div>
+      <p>Registrando, por favor espera...</p>
+    </div>
+    <form (ngSubmit)="onRegister()" *ngIf="!cargando">
       <div class="input-group">
         <label for="nombre">Nombre Completo</label>
         <input
@@ -37,8 +41,13 @@
       </div>
       <button type="submit" class="btn-primary">Registrarse</button>
     </form>
-    <p class="login-link">
+    <p class="login-link" *ngIf="!cargando">
       ¿Ya tienes una cuenta? <a routerLink="/home">Inicia Sesión</a>
     </p>
+  </div>
+  <div class="modal" *ngIf="mostrarModal">
+    <div class="modal-content" [class.error]="tipoMensaje === 'error'" [class.exito]="tipoMensaje === 'exito'">
+      <p>{{ mensajeModal }}</p>
+    </div>
   </div>
 </div>
