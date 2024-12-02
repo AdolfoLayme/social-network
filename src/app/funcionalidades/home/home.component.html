@@ -7,7 +7,6 @@
         la red social de los estudiantes.
       </p>
     </div>
-    <!-- Formulario de inicio de sesión -->
     <div class="formulario-login">
       <h2>Iniciar Sesión</h2>
       <form (ngSubmit)="onLogin()">
@@ -33,14 +32,21 @@
             required
           />
         </div>
-        <button type="submit" class="boton-primario">Iniciar Sesión</button>
+        <button type="submit" class="boton-primario" [disabled]="cargando">
+          Iniciar Sesión
+        </button>
+        <div class="spinner-container" *ngIf="cargando">
+          <div class="spinner"></div>
+        </div>
+        <p class="mensaje-error" *ngIf="mensajeError">{{ mensajeError }}</p>
       </form>
       <p class="enlace-registro">
         ¿No tienes una cuenta?
         <a routerLink="/registro">Regístrate aquí</a>
       </p>
       <p class="enlace-recuperar">
-        ¿Olvidaste tu contraseña? <a routerLink="/recuperar-clave">Recupérala aquí</a>
+        ¿Olvidaste tu contraseña?
+        <a routerLink="/recuperar-clave">Recupérala aquí</a>
       </p>
     </div>
   </div>
