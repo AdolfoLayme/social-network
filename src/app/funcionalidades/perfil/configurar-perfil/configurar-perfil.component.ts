@@ -13,12 +13,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./configurar-perfil.component.css'],
 })
 export class ConfigurarPerfilComponent {
-  nombreCompleto: string = '';
-  carrera: string = '';
-  anoAcademico: string = '';
+  nombreCompleto = '';
+  carrera = '';
+  anoAcademico = '';
   foto: string | null = null;
 
-  carreras: string[] = [
+  carreras = [
     'Ingeniería de Sistemas',
     'Ingeniería Civil',
     'Ingeniería Ambiental',
@@ -30,7 +30,8 @@ export class ConfigurarPerfilComponent {
     'Enfermería',
     'Psicología',
   ];
-  anoAcademicos: string[] = [
+
+  anoAcademicos = [
     'Primer Año',
     'Segundo Año',
     'Tercer Año',
@@ -50,6 +51,7 @@ export class ConfigurarPerfilComponent {
       if (usuarioActual?.uid) {
         const docRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
         const datosDoc = await getDoc(docRef);
+
         if (datosDoc.exists()) {
           const datosUsuario = datosDoc.data();
           this.nombreCompleto = datosUsuario['nombre'] || usuarioActual.displayName || '';
@@ -87,18 +89,17 @@ export class ConfigurarPerfilComponent {
     try {
       const usuarioActual = await this.usuarioService.getUsuarioActual();
       if (usuarioActual?.uid) {
-        // Guardar los datos en Firestore
         const docRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
         await setDoc(docRef, {
           nombre: this.nombreCompleto,
           carrera: this.carrera,
           anoAcademico: this.anoAcademico,
           foto: this.foto,
+          perfilCompletado: true,
           updatedAt: new Date(),
         });
 
         console.log('Datos guardados exitosamente en Firestore');
-        // Redirigir al feed después de guardar
         this.router.navigate(['/feed']);
       } else {
         console.error('No se encontró un usuario autenticado');
