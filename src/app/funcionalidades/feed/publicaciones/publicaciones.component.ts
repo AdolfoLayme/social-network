@@ -1,37 +1,55 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
+import { UsuarioService } from '../../../core/servicios/usuario.service';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './publicaciones.component.html',
-  styleUrl: './publicaciones.component.css'
+  styleUrls: ['./publicaciones.component.css']
 })
-export class PublicacionesComponent {
-  usuario = {
-    nombre: 'Adolfo',
-    handle: 'Adolfo_Bonif',
-    fotoPerfil: '/icons/icono-perfil.png',
-  };
-
-  publicaciones = [
-    { usuario: 'Adolfo Layme', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post1.jpg', descripcion: '¡Hola! Esta es mi primera publicación.', tiempo: 'Hace 5 minutos' },
-    { usuario: 'Estudiante Ingeniería', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post2.jpg', descripcion: 'Preparando proyectos para fin de semestre...', tiempo: 'Hace 1 hora' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    { usuario: 'Otro Usuario', usuarioImagen: '/icons/icono-perfil.png', imagen: 'assets/post3.jpg', descripcion: '¿Alguien sabe cómo resolver este problema?', tiempo: 'Hace 2 horas' },
-    
-  ];
-
+export class PublicacionesComponent implements OnInit {
+  usuario: any = {};
+  publicaciones: any[] = [];
   nuevaPublicacion: string = '';
   nuevaImagen: string = '';
+
+  constructor(
+    private publicacionesService: PublicacionesService,
+    private usuarioService: UsuarioService
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarUsuario();
+    this.cargarPublicaciones();
+  }
+
+  async cargarUsuario(): Promise<void> {
+    try {
+      const usuarioActual = await this.usuarioService.getUsuarioActual();
+      if (usuarioActual?.uid) {
+        const datosUsuario = await this.usuarioService.obtenerDatosUsuario(
+          usuarioActual.uid
+        );
+        this.usuario = {
+          uid: usuarioActual.uid,
+          nombre: datosUsuario?.nombre || 'Usuario Anónimo',
+          fotoPerfil: datosUsuario?.foto || '/icons/icono-perfil.png'
+        };
+      }
+    } catch (error) {
+      console.error('Error al cargar el usuario:', error);
+    }
+  }
+
+  cargarPublicaciones(): void {
+    this.publicacionesService.obtenerPublicaciones().then((datos) => {
+      this.publicaciones = datos;
+    });
+  }
 
   seleccionarImagen(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -46,16 +64,43 @@ export class PublicacionesComponent {
 
   agregarPublicacion(): void {
     if (this.nuevaPublicacion.trim()) {
-      this.publicaciones.unshift({
+      const nuevaPub = {
+        descripcion: this.nuevaPublicacion,
+        imagen: this.nuevaImagen || '',
         usuario: this.usuario.nombre,
         usuarioImagen: this.usuario.fotoPerfil,
-        imagen: this.nuevaImagen || '',
-        descripcion: this.nuevaPublicacion,
-        tiempo: 'Hace un momento',
-      });
-      this.nuevaPublicacion = '';
-      this.nuevaImagen = '';
+        usuarioUid: this.usuario.uid,
+        likes: []
+      };
+
+      this.publicacionesService
+        .agregarPublicacion(nuevaPub)
+        .then(() => {
+          this.nuevaPublicacion = '';
+          this.nuevaImagen = '';
+          this.cargarPublicaciones();
+        })
+        .catch((error) => console.error('Error al agregar publicación:', error));
     }
   }
 
+  agregarMeGusta(publicacion: any): void {
+    const usuarioId = this.usuario.uid;
+    if (!publicacion.likes.includes(usuarioId)) {
+      publicacion.likes.push(usuarioId);
+      this.publicacionesService.actualizarPublicacion(publicacion.id, {
+        likes: publicacion.likes
+      });
+    }
+  }
+
+  eliminarPublicacion(publicacionId: string): void {
+    this.publicacionesService.eliminarPublicacion(publicacionId).then(() => {
+      this.cargarPublicaciones();
+    });
+  }
+
+  esAutorPublicacion(publicacion: any): boolean {
+    return publicacion.usuarioUid === this.usuario.uid;
+  }
 }
