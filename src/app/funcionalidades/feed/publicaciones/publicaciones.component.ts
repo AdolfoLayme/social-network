@@ -3,19 +3,21 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
 import { UsuarioService } from '../../../core/servicios/usuario.service';
+import { ComentariosComponent } from '../comentarios/comentarios.component';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ComentariosComponent],
   templateUrl: './publicaciones.component.html',
-  styleUrls: ['./publicaciones.component.css']
+  styleUrls: ['./publicaciones.component.css'],
 })
 export class PublicacionesComponent implements OnInit {
   usuario: any = {};
   publicaciones: any[] = [];
   nuevaPublicacion: string = '';
   nuevaImagen: string = '';
+  comentariosAbiertos: { [id: string]: boolean } = {}; 
 
   constructor(
     private publicacionesService: PublicacionesService,
@@ -37,7 +39,7 @@ export class PublicacionesComponent implements OnInit {
         this.usuario = {
           uid: usuarioActual.uid,
           nombre: datosUsuario?.nombre || 'Usuario Anónimo',
-          fotoPerfil: datosUsuario?.foto || '/icons/icono-perfil.png'
+          fotoPerfil: datosUsuario?.foto || '/icons/icono-perfil.png',
         };
       }
     } catch (error) {
@@ -63,25 +65,34 @@ export class PublicacionesComponent implements OnInit {
   }
 
   agregarPublicacion(): void {
-    if (this.nuevaPublicacion.trim()) {
-      const nuevaPub = {
-        descripcion: this.nuevaPublicacion,
-        imagen: this.nuevaImagen || '',
-        usuario: this.usuario.nombre,
-        usuarioImagen: this.usuario.fotoPerfil,
-        usuarioUid: this.usuario.uid,
-        likes: []
-      };
-
-      this.publicacionesService
-        .agregarPublicacion(nuevaPub)
-        .then(() => {
-          this.nuevaPublicacion = '';
-          this.nuevaImagen = '';
-          this.cargarPublicaciones();
-        })
-        .catch((error) => console.error('Error al agregar publicación:', error));
+    if (!this.nuevaPublicacion.trim()) {
+      console.warn('El campo de publicación está vacío.');
+      return;
     }
+
+    if (!this.usuario.nombre || !this.usuario.uid) {
+      console.error('No se puede agregar publicación sin un usuario válido.');
+      return;
+    }
+
+    const nuevaPub = {
+      descripcion: this.nuevaPublicacion,
+      imagen: this.nuevaImagen || '',
+      usuario: this.usuario.nombre,
+      usuarioImagen: this.usuario.fotoPerfil,
+      usuarioUid: this.usuario.uid,
+      fecha: new Date(),
+      likes: [],
+    };
+
+    this.publicacionesService
+      .agregarPublicacion(nuevaPub)
+      .then(() => {
+        this.nuevaPublicacion = '';
+        this.nuevaImagen = '';
+        this.cargarPublicaciones();
+      })
+      .catch((error) => console.error('Error al agregar publicación:', error));
   }
 
   agregarMeGusta(publicacion: any): void {
@@ -89,7 +100,7 @@ export class PublicacionesComponent implements OnInit {
     if (!publicacion.likes.includes(usuarioId)) {
       publicacion.likes.push(usuarioId);
       this.publicacionesService.actualizarPublicacion(publicacion.id, {
-        likes: publicacion.likes
+        likes: publicacion.likes,
       });
     }
   }
@@ -102,5 +113,9 @@ export class PublicacionesComponent implements OnInit {
 
   esAutorPublicacion(publicacion: any): boolean {
     return publicacion.usuarioUid === this.usuario.uid;
+  }
+
+  toggleComentarios(id: string): void {
+    this.comentariosAbiertos[id] = !this.comentariosAbiertos[id];
   }
 }

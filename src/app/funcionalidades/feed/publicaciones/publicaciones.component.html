@@ -2,6 +2,7 @@
   <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="profile-pic" />
   <textarea placeholder="¿Qué está pasando?" [(ngModel)]="nuevaPublicacion"></textarea>
   <div class="acciones-publicacion">
+    <label for="imagenInput" class="btn-imagen">Imagen</label>
     <input
       type="file"
       accept="image/*"
@@ -9,14 +10,18 @@
       (change)="seleccionarImagen($event)"
       style="display: none;"
     />
-    <label for="imagenInput" class="btn-imagen">Imagen</label>
     <button class="btn-publicar" (click)="agregarPublicacion()">Publicar</button>
   </div>
   <img *ngIf="nuevaImagen" [src]="nuevaImagen" alt="Vista previa" class="vista-previa" />
 </div>
 
 <div class="posts">
-  <div class="post" *ngFor="let post of publicaciones">
+  <div
+    class="post"
+    *ngFor="let post of publicaciones"
+    #publicacion
+    [attr.data-id]="post.id"
+  >
     <div class="post-header">
       <img [src]="post.usuarioImagen" alt="Foto de perfil" class="profile-pic" />
       <div class="post-info">
@@ -30,11 +35,18 @@
       <button class="btn-like" (click)="agregarMeGusta(post)">
         Me gusta ({{ post.likes?.length || 0 }})
       </button>
-      <button class="btn-comentar">Comentar</button>
+      <button (click)="toggleComentarios(post.id)">Comentarios</button>
       <button class="btn-compartir">Compartir</button>
-      <button *ngIf="esAutorPublicacion(post)" class="btn-eliminar" (click)="eliminarPublicacion(post.id)">
+      <button
+        *ngIf="esAutorPublicacion(post)"
+        class="btn-eliminar"
+        (click)="eliminarPublicacion(post.id)"
+      >
         Eliminar
       </button>
+    </div>
+    <div class="comentarios-container" *ngIf="comentariosAbiertos[post.id]">
+      <app-comentarios [publicacionId]="post.id"></app-comentarios>
     </div>
   </div>
 </div>

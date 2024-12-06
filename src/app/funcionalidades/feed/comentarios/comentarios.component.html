@@ -1,0 +1,20 @@
+<div class="comentarios-container">
+    <div class="nuevo-comentario">
+      <textarea
+        placeholder="Escribe un comentario..."
+        [(ngModel)]="nuevoComentario"
+      ></textarea>
+      <button class="btn-comentar" (click)="agregarComentario()">Comentar</button>
+    </div>
+  
+    <div class="lista-comentarios">
+      <div *ngFor="let comentario of comentarios" class="comentario">
+        <div class="comentario-header">
+          <strong>{{ comentario.usuario }}</strong>
+          <span class="fecha">{{ comentario.fecha.toDate() | date: 'short' }}</span>
+        </div>
+        <p class="contenido">{{ comentario.contenido }}</p>
+      </div>
+    </div>
+  </div>
+  
