@@ -10,17 +10,23 @@
     <div class="formulario-login">
       <h2>Iniciar Sesión</h2>
       <form (ngSubmit)="onLogin()">
-        <div class="grupo-entrada">
+        <!-- Grupo para Correo -->
+        <div class="grupo-entrada" [ngClass]="{ invalido: correoInvalido }">
           <label for="correo">Correo Electrónico</label>
           <input
             type="email"
             id="correo"
-            placeholder="Ingresa tu correo"
+            placeholder="Ingresa tu correo institucional"
             [(ngModel)]="email"
             name="email"
             required
+            (blur)="validarCorreoInstitucional()"
           />
+          <p class="mensaje-error" *ngIf="correoInvalido">
+            Solo se permiten correos institucionales del dominio &#64;unajma.edu.pe.
+          </p>
         </div>
+        <!-- Grupo para Contraseña -->
         <div class="grupo-entrada">
           <label for="contrasena">Contraseña</label>
           <input
@@ -32,7 +38,7 @@
             required
           />
         </div>
-        <button type="submit" class="boton-primario" [disabled]="cargando">
+        <button type="submit" class="boton-primario" [disabled]="cargando || correoInvalido">
           Iniciar Sesión
         </button>
         <div class="spinner-container" *ngIf="cargando">

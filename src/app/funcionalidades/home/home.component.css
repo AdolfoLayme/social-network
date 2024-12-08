@@ -143,8 +143,11 @@
 
 /* Mensaje de error */
 .mensaje-error {
-  color: #dc3545;
-  font-size: 0.9rem;
-  text-align: center;
-  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.grupo-entrada.invalido input {
+  border: 2px solid red;
 }
