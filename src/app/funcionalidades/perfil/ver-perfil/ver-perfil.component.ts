@@ -18,8 +18,8 @@ export class VerPerfilComponent implements OnInit {
     nombre: '',
     handle: '',
     biografia: '',
-    foto: [''],
-    fondo: [''],
+    foto: '/icons/icono-perfil.png', 
+    fondo: '/icons/icono-fondo.png', 
     publicaciones: [],
   };
 
@@ -44,11 +44,11 @@ export class VerPerfilComponent implements OnInit {
         const datosUsuario = await this.usuarioService.obtenerDatosUsuario(usuarioActual.uid);
         if (datosUsuario) {
           this.usuario = {
-            ...this.usuario, 
-            ...datosUsuario, 
-            fotoPerfil: datosUsuario.foto || '/assets/icons/icono-perfil.png',
-            fondo: datosUsuario.fondo || '/assets/icons/icono-fondo.png',
-            handle: datosUsuario.handle || this.usuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''), 
+            ...this.usuario,
+            ...datosUsuario,
+            foto: datosUsuario.foto?.trim() || '/icons/icono-perfil.png', 
+            fondo: datosUsuario.fondo?.trim() || '/icons/icono-perfil.png',
+            handle: datosUsuario.handle || this.usuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''),
           };
         } else {
           console.warn('No se pudieron obtener los datos del usuario.');
@@ -60,21 +60,20 @@ export class VerPerfilComponent implements OnInit {
       this.cargando = false;
     }
   }
-  
- 
+
   async cargarPublicacionesUsuario(): Promise<void> {
     try {
       const usuarioActual = await this.usuarioService.getUsuarioActual();
       if (usuarioActual?.uid) {
         const publicaciones = await this.publicacionesService.obtenerPublicaciones();
-        this.usuario.publicaciones = publicaciones.filter(
-          (post) => post.usuarioUid === usuarioActual.uid
-        ).map((post) => {
-          if (post.fecha?.toDate) {
-            post.fecha = post.fecha.toDate(); 
-          }
-          return post;
-        });
+        this.usuario.publicaciones = publicaciones
+          .filter((post) => post.usuarioUid === usuarioActual.uid)
+          .map((post) => {
+            if (post.fecha?.toDate) {
+              post.fecha = post.fecha.toDate();
+            }
+            return post;
+          });
       }
     } catch (error) {
       console.error('Error al cargar publicaciones del usuario:', error);
@@ -93,6 +92,4 @@ export class VerPerfilComponent implements OnInit {
     this.cargarDatosPerfil();
     this.cargarPublicacionesUsuario();
   }
-  
-  
 }

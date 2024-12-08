@@ -3,7 +3,8 @@ import { NgClass, NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-
+import { UsuarioService } from '../../../core/servicios/usuario.service';
+import { Usuario } from '../../../core/interfaces/usuario';
 
 
 @Component({
@@ -16,30 +17,48 @@ import { Router, RouterModule } from '@angular/router';
 
 export class FeedComponent {
   usuario = {
-    nombre: 'Adolfo',
-    handle: 'Adolfo_Bonif',
-    fotoPerfil: '/icons/icono-perfil.png'
+    nombre: '',
+    handle: '',
+    fotoPerfil: '/icons/icono-perfil.png',
   };
 
-   // Propiedad para controlar la visibilidad del menú
-   menuVisible: boolean = false;
+  menuVisible: boolean = false;
 
-   // Método para alternar la visibilidad del menú
-   toggleMenu(): void {
-     this.menuVisible = !this.menuVisible;
-   }
- 
+  constructor(private usuarioService: UsuarioService, private router: Router) {}
 
-
-  currentView: string = 'feed'; 
-
-  cambiarVista(vista: string): void {
-    this.currentView = vista; 
+  ngOnInit(): void {
+    this.cargarUsuario();
   }
-  constructor(private router: Router) {}
 
-  // Navegar directamente con rutas configuradas
-  navegarAVista(ruta: string): void {
-    this.router.navigate([ruta]);
+  async cargarUsuario(): Promise<void> {
+    try {
+      const usuarioActual = await this.usuarioService.getUsuarioActual();
+      if (usuarioActual?.uid) {
+        const datosUsuario = await this.usuarioService.obtenerDatosUsuario(usuarioActual.uid);
+        if (datosUsuario) {
+          this.usuario = {
+            ...this.usuario,
+            nombre: datosUsuario.nombre || 'Usuario Anónimo',
+            handle: datosUsuario.handle || this.usuarioService.generarHandle(usuarioActual.email || undefined),
+            fotoPerfil: datosUsuario.foto || '/icons/icono-perfil.png',
+          };
+        }
+      }
+    } catch (error) {
+      console.error('Error al cargar datos del usuario:', error);
+    }
+  }
+
+  toggleMenu(): void {
+    this.menuVisible = !this.menuVisible;
+  }
+
+  async cerrarSesion(): Promise<void> {
+    try {
+      await this.usuarioService.logout();
+      this.router.navigate(['/home']); // Redirige al usuario a la página de inicio de sesión.
+    } catch (error) {
+      console.error('Error al intentar cerrar la sesión:', error);
+    }
   }
 }
