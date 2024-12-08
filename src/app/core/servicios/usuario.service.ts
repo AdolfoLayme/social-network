@@ -21,13 +21,12 @@ import { Usuario } from '../interfaces/usuario';
   providedIn: 'root',
 })
 export class UsuarioService {
-
   private perfilActualizadoSubject = new BehaviorSubject<any>(null);
   perfilActualizado$ = this.perfilActualizadoSubject.asObservable();
 
   constructor(private auth: Auth, private firestore: Firestore) {}
 
-
+ 
   notificarPerfilActualizado(usuario: any): void {
     this.perfilActualizadoSubject.next(usuario);
   }
@@ -42,7 +41,7 @@ export class UsuarioService {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-
+ 
   async logout(): Promise<void> {
     try {
       await this.auth.signOut();
@@ -59,13 +58,13 @@ export class UsuarioService {
       onAuthStateChanged(this.auth, (user) => resolve(user));
     });
   }
-  
-  
 
-  generarHandle(email: string | undefined): string {
-    return email ? email.split('@')[0] : 'Usuario';
+  
+  public generarHandle(email: string | undefined): string {
+    if (!email) return '';
+    return email.split('@')[0];
   }
-
+  
 
   async obtenerDatosUsuario(uid: string): Promise<Usuario | null> {
     try {
@@ -84,7 +83,9 @@ export class UsuarioService {
       throw new Error('Error al obtener datos del usuario.');
     }
   }
+  
 
+  
   async actualizarUsuario(uid: string, datos: Partial<Usuario>): Promise<void> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -96,16 +97,6 @@ export class UsuarioService {
     }
   }
 
-  async esPerfilCompletado(uid: string): Promise<boolean> {
-    try {
-      const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
-      const usuarioSnapshot = await getDoc(usuarioRef);
-      return usuarioSnapshot.exists() && !!usuarioSnapshot.data()?.['perfilCompletado'];
-    } catch (error) {
-      console.error('Error al verificar si el perfil está completado:', error);
-      throw new Error('No se pudo verificar el estado del perfil.');
-    }
-  }
 
   async subirImagen(tipo: string, archivo: File): Promise<string> {
     try {
@@ -118,22 +109,21 @@ export class UsuarioService {
       throw new Error('No se pudo subir la imagen.');
     }
   }
-
-  async actualizarPerfil(datosUsuario: Partial<Usuario>): Promise<void> {
+  async esPerfilCompletado(uid: string): Promise<boolean> {
     try {
-      const usuarioActual = await this.getUsuarioActual();
-      if (usuarioActual?.uid) {
-        const usuarioRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
-        datosUsuario.handle = this.generarHandle(datosUsuario.email ?? usuarioActual.email ?? '');
-        await updateDoc(usuarioRef, datosUsuario);
-        this.notificarPerfilActualizado(datosUsuario);
+      const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
+      const usuarioSnapshot = await getDoc(usuarioRef);
+      if (usuarioSnapshot.exists()) {
+        const datosUsuario = usuarioSnapshot.data();
+        return datosUsuario?.['perfilCompletado'] || false;
       } else {
-        console.error('No hay usuario autenticado para actualizar el perfil.');
-        throw new Error('Usuario no autenticado.');
+        console.warn(`El usuario con UID ${uid} no existe.`);
+        return false;
       }
     } catch (error) {
-      console.error('Error al actualizar el perfil del usuario:', error);
-      throw new Error('No se pudo actualizar el perfil.');
+      console.error('Error al verificar si el perfil está completado:', error);
+      throw new Error('No se pudo verificar el estado del perfil.');
     }
   }
+  
 }

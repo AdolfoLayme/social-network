@@ -21,18 +21,16 @@
       </li>
     </ul>
     <div class="foto-usuario" (click)="toggleMenu()">
-      <img [src]="usuario.fotoPerfil" alt="Foto de perfil" />
+      <img [src]="usuario.foto" alt="Foto de perfil" />
       <div class="usuario-info">
         <p class="nombre-usuario">{{ usuario.nombre }}</p>
         <p class="handle">&#64;{{ usuario.handle }}</p>
       </div>
-      <!-- Menú emergente -->
       <div class="menu-opciones-usuario" *ngIf="menuVisible">
         <ul>
-          <li>Agregar una cuenta existente</li>
           <li (click)="cerrarSesion()">Cerrar la sesión de <span>{{ usuario.handle }}</span></li>
         </ul>
-      </div>
+      </div>      
     </div>
   </div>
 

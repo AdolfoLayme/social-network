@@ -18,8 +18,8 @@ export class VerPerfilComponent implements OnInit {
     nombre: '',
     handle: '',
     biografia: '',
-    foto: '/icons/icono-perfil.png', 
-    fondo: '/icons/icono-fondo.png', 
+    foto: '/icons/icono-perfil.png',
+    fondo: '/icons/icono-fondo.png',
     publicaciones: [],
   };
 
@@ -46,9 +46,9 @@ export class VerPerfilComponent implements OnInit {
           this.usuario = {
             ...this.usuario,
             ...datosUsuario,
-            foto: datosUsuario.foto?.trim() || '/icons/icono-perfil.png', 
-            fondo: datosUsuario.fondo?.trim() || '/icons/icono-perfil.png',
-            handle: datosUsuario.handle || this.usuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''),
+            foto: datosUsuario.foto || '/icons/icono-perfil.png',
+            fondo: datosUsuario.fondo || '/icons/icono-fondo.png',
+            handle: datosUsuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''),
           };
         } else {
           console.warn('No se pudieron obtener los datos del usuario.');
@@ -60,6 +60,7 @@ export class VerPerfilComponent implements OnInit {
       this.cargando = false;
     }
   }
+  
 
   async cargarPublicacionesUsuario(): Promise<void> {
     try {

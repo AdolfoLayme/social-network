@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, HostListener } from '@angular/core';
 import { NgClass, NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,20 +6,18 @@ import { Router, RouterModule } from '@angular/router';
 import { UsuarioService } from '../../../core/servicios/usuario.service';
 import { Usuario } from '../../../core/interfaces/usuario';
 
-
 @Component({
   selector: 'app-feed',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './feed.component.html',
-  styleUrl: './feed.component.css',
+  styleUrls: ['./feed.component.css'], 
 })
-
 export class FeedComponent {
   usuario = {
     nombre: '',
     handle: '',
-    fotoPerfil: '/icons/icono-perfil.png',
+    foto: '/icons/icono-perfil.png',
   };
 
   menuVisible: boolean = false;
@@ -40,7 +38,7 @@ export class FeedComponent {
             ...this.usuario,
             nombre: datosUsuario.nombre || 'Usuario Anónimo',
             handle: datosUsuario.handle || this.usuarioService.generarHandle(usuarioActual.email || undefined),
-            fotoPerfil: datosUsuario.foto || '/icons/icono-perfil.png',
+            foto: datosUsuario.foto || '/icons/icono-perfil.png',
           };
         }
       }
@@ -53,10 +51,27 @@ export class FeedComponent {
     this.menuVisible = !this.menuVisible;
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const clickedElement = event.target as HTMLElement;
+    const menuElement = document.querySelector('.menu-opciones-usuario');
+    const fotoUsuarioElement = document.querySelector('.foto-usuario');
+
+    if (
+      this.menuVisible &&
+      menuElement &&
+      !menuElement.contains(clickedElement) &&
+      fotoUsuarioElement &&
+      !fotoUsuarioElement.contains(clickedElement)
+    ) {
+      this.menuVisible = false; 
+    }
+  }
+
   async cerrarSesion(): Promise<void> {
     try {
       await this.usuarioService.logout();
-      this.router.navigate(['/home']); // Redirige al usuario a la página de inicio de sesión.
+      this.router.navigate(['/home']); 
     } catch (error) {
       console.error('Error al intentar cerrar la sesión:', error);
     }
