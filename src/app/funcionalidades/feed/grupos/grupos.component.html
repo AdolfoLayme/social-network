@@ -1,27 +1,41 @@
 <div class="crear-grupo">
-    <h2>Crear un Grupo</h2>
-    <form (submit)="crearGrupo()">
-      <input type="text" [(ngModel)]="nuevoGrupo.nombre" placeholder="Nombre del grupo" required />
-      <textarea [(ngModel)]="nuevoGrupo.descripcion" placeholder="Descripción del grupo" required></textarea>
-      <select [(ngModel)]="nuevoGrupo.categoria" required>
-        <option value="" disabled selected>Seleccionar categoría</option>
-        <option *ngFor="let categoria of categorias" [value]="categoria">{{ categoria }}</option>
-      </select>
-      <input type="file" accept="image/*" (change)="seleccionarImagen($event)" />
-      <button type="submit">Crear Grupo</button>
-    </form>
-  </div>
-  
-  <div class="lista-grupos">
-    <h2>Grupos Disponibles</h2>
-    <div *ngFor="let grupo of grupos" class="grupo">
-      <img [src]="grupo.imagen" alt="Imagen del grupo" />
-      <div class="info">
-        <h3>{{ grupo.nombre }}</h3>
-        <p>{{ grupo.descripcion }}</p>
-        <p>Categoría: {{ grupo.categoria }}</p>
-        <button (click)="unirseAGrupo(grupo)">Unirse</button>
-      </div>
+  <h2>Crear un Grupo</h2>
+  <form (submit)="crearGrupo()">
+    <input
+      type="text"
+      [(ngModel)]="nuevoGrupo.nombre"
+      name="nombre"
+      placeholder="Nombre del grupo"
+    />
+    <textarea
+      [(ngModel)]="nuevoGrupo.descripcion"
+      name="descripcion"
+      placeholder="Descripción del grupo"
+    ></textarea>
+    <select [(ngModel)]="nuevoGrupo.categoria" name="categoria">
+      <option value="" disabled selected>Seleccionar categoría</option>
+      <option *ngFor="let categoria of categorias" [value]="categoria">
+        {{ categoria }}
+      </option>
+    </select>
+    <input
+      type="file"
+      accept="image/*"
+      (change)="seleccionarImagen($event)"
+    />
+    <button type="submit">Crear Grupo</button>
+  </form>
+</div>
+
+<div class="lista-grupos">
+  <h2>Grupos Disponibles</h2>
+  <div *ngFor="let grupo of grupos" class="grupo">
+    <img [src]="grupo.imagen" alt="Imagen del grupo" />
+    <div class="info">
+      <h3>{{ grupo.nombre }}</h3>
+      <p>{{ grupo.descripcion }}</p>
+      <p>Categoría: {{ grupo.categoria }}</p>
+      <button (click)="unirseAGrupo(grupo)">Unirse</button>
     </div>
   </div>
-  
+</div>
