@@ -1,6 +1,9 @@
-<div class="perfil">
+<div class="perfil" *ngIf="!mostrarModal">
   <!-- Fondo del perfil -->
-  <div class="fondo-perfil" [style.backgroundImage]="'url(' + usuario.fondoPerfil + ')'">
+  <div
+    class="fondo-perfil"
+    [style.backgroundImage]="'url(' + usuario.fondoPerfil + ')'"
+  >
     <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="foto-perfil" />
   </div>
 
@@ -9,7 +12,9 @@
     <h1>{{ usuario.nombre }}</h1>
     <p class="handle">&#64;{{ usuario.handle }}</p>
     <p class="biografia">{{ usuario.biografia }}</p>
-    <button class="btn-editar-perfil">Editar perfil</button>
+    <button class="btn-editar-perfil" (click)="abrirModal()">
+      Editar perfil
+    </button>
   </div>
 
   <!-- Publicaciones del usuario -->
@@ -19,12 +24,24 @@
       <div class="post-header">
         <img [src]="usuario.fotoPerfil" alt="Foto de perfil" class="mini-foto-perfil" />
         <p class="nombre-usuario">{{ usuario.nombre }}</p>
-        <p class="tiempo">{{ post.tiempo }}</p>
+        <p class="tiempo">{{ post.fecha | date: 'short' }}</p>
       </div>
       <p class="descripcion">{{ post.descripcion }}</p>
       <div class="post-media" *ngIf="post.imagen">
         <img [src]="post.imagen" alt="Imagen del post" />
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Modal para editar perfil -->
+<div class="modal-backdrop" *ngIf="mostrarModal">
+  <div class="modal">
+    <button class="btn-cerrar" (click)="cerrarModal()">&#x2715;</button>
+    <app-editar-perfil
+  [usuario]="usuario"
+  (cerrar)="actualizarDatosPerfil()">
+</app-editar-perfil>
+
   </div>
 </div>

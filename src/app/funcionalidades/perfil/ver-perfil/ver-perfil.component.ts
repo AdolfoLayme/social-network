@@ -1,39 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
-
+import { UsuarioService } from '../../../core/servicios/usuario.service';
+import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
+import { EditarPerfilComponent } from '../editar-perfil/editar-perfil.component';
 
 @Component({
   selector: 'app-ver-perfil',
   standalone: true,
-  imports: [RouterModule, NgFor, CommonModule],
+  imports: [RouterModule, NgFor, CommonModule, EditarPerfilComponent],
   templateUrl: './ver-perfil.component.html',
-  styleUrl: './ver-perfil.component.css'
+  styleUrls: ['./ver-perfil.component.css']
 })
-export class VerPerfilComponent {
-  usuario = {
-    nombre: 'Adolfo Bonif',
-    handle: 'Adolfo_Bonif',
-    biografia: 'Estudiante de Ingeniería de Sistemas | Apasionado por la tecnología y el desarrollo de software',
-    fondoPerfil: '/icons/icono-perfil.png', // Ruta de la imagen de fondo
-    fotoPerfil: '/icons/icono-perfil.png', // Ruta de la imagen de perfil
-    publicaciones: [
-      {
-        descripcion: '¡Hola! Esta es mi primera publicación.',
-        tiempo: 'Hace 5 minutos',
-        imagen: '/icons/icono-perfil.png' // Ruta de la imagen opcional del post
-      },
-      {
-        descripcion: 'Preparando proyectos para fin de semestre...',
-        tiempo: 'Hace 1 hora',
-        imagen: null // Sin imagen para esta publicación
-      }
-    ]
+export class VerPerfilComponent implements OnInit {
+  usuario: any = {
+    nombre: '',
+    handle: '',
+    biografia: '',
+    fondoPerfil: '/icons/icono-fondo.png',
+    fotoPerfil: '/icons/icono-perfil.png',
+    publicaciones: [],
   };
 
-  // Método para editar perfil (opcional, puedes implementarlo en el futuro)
-  editarPerfil() {
-    console.log('Editar perfil clicado');
+  cargando: boolean = false;
+  mostrarModal: boolean = false;
+
+  constructor(
+    private usuarioService: UsuarioService,
+    private publicacionesService: PublicacionesService
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarDatosPerfil();
+    this.cargarPublicacionesUsuario();
   }
+
+  cargarDatosPerfil(): void {
+    this.cargando = true;
+    this.usuarioService.getUsuarioActual().then((usuario) => {
+      if (usuario?.uid) {
+        this.usuarioService.obtenerDatosUsuario(usuario.uid).then((datosUsuario) => {
+          this.usuario = { ...this.usuario, ...datosUsuario }; 
+          this.cargando = false;
+        });
+      } else {
+        this.cargando = false;
+      }
+    });
+  }
+
+  async cargarPublicacionesUsuario(): Promise<void> {
+    try {
+      const usuarioActual = await this.usuarioService.getUsuarioActual();
+      if (usuarioActual?.uid) {
+        const publicaciones = await this.publicacionesService.obtenerPublicaciones();
+        this.usuario.publicaciones = publicaciones.filter(
+          (post) => post.usuarioUid === usuarioActual.uid
+        ).map((post) => {
+          if (post.fecha?.toDate) {
+            post.fecha = post.fecha.toDate(); 
+          }
+          return post;
+        });
+      }
+    } catch (error) {
+      console.error('Error al cargar publicaciones del usuario:', error);
+    }
+  }
+
+  abrirModal(): void {
+    this.mostrarModal = true;
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+  }
+
+  actualizarDatosPerfil(): void {
+    this.cargarDatosPerfil();
+    this.cargarPublicacionesUsuario();
+  }
+  
+  
 }

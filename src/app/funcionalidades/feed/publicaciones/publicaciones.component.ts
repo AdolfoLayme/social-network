@@ -47,11 +47,26 @@ export class PublicacionesComponent implements OnInit {
     }
   }
 
-  cargarPublicaciones(): void {
-    this.publicacionesService.obtenerPublicaciones().then((datos) => {
-      this.publicaciones = datos;
-    });
+  async cargarPublicaciones(): Promise<void> {
+    try {
+      const usuarioActual = await this.usuarioService.getUsuarioActual();
+      if (usuarioActual?.uid) {
+        const datosUsuario = await this.usuarioService.obtenerDatosUsuario(usuarioActual.uid);
+        const publicaciones = await this.publicacionesService.obtenerPublicaciones();
+  
+        this.publicaciones = publicaciones.map((post) => {
+          if (post.usuarioUid === usuarioActual.uid) {
+            // Actualiza dinámicamente el nombre del usuario en las publicaciones
+            post.usuario = datosUsuario?.nombre || 'Usuario Anónimo';
+          }
+          return post;
+        });
+      }
+    } catch (error) {
+      console.error('Error al cargar publicaciones:', error);
+    }
   }
+  
 
   seleccionarImagen(event: Event): void {
     const input = event.target as HTMLInputElement;

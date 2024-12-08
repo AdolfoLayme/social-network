@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { RecuperarClaveComponent } from './funcionalidades/autenticacion/recuperar-clave/recuperar-clave.component';
 import { ConfigurarPerfilGuard } from './core/guards/configurar-perfil.guard';
+import { EditarPerfilGuard } from './core/guards/editar-perfil.guard';
 
 export const routes: Routes = [
   {
@@ -59,6 +60,16 @@ export const routes: Routes = [
           import(
             './funcionalidades/perfil/ver-perfil/ver-perfil.component'
           ).then((m) => m.VerPerfilComponent),
+        children: [
+          {
+            path: 'editar',
+            loadComponent: () =>
+              import(
+                './funcionalidades/perfil/editar-perfil/editar-perfil.component'
+              ).then((m) => m.EditarPerfilComponent),
+            canActivate: [EditarPerfilGuard], 
+          },
+        ],
       },
       {
         path: 'grupos',
@@ -76,4 +87,4 @@ export const routes: Routes = [
       },
     ],
   },
-];
+]  
