@@ -40,9 +40,8 @@
   <div class="modal">
     <button class="btn-cerrar" (click)="cerrarModal()">&#x2715;</button>
     <app-editar-perfil
-  [usuario]="usuario"
-  (cerrar)="actualizarDatosPerfil()">
-</app-editar-perfil>
-
+      [usuario]="usuario"
+      (cerrar)="cerrarModal()"
+    ></app-editar-perfil>
   </div>
 </div>

@@ -91,7 +91,6 @@ export class EditarPerfilComponent implements OnInit {
   
   
   
-
   cancelar(): void {
     this.cerrar.emit();
   }
