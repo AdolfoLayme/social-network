@@ -69,26 +69,32 @@ export class PublicacionesComponent implements OnInit {
 
   seleccionarImagen(event: Event): void {
     const input = event.target as HTMLInputElement;
-    if (input?.files?.[0]) {
+    if (input?.files?.length) {
+      const file = input.files[0];
       const lector = new FileReader();
+  
       lector.onload = () => {
-        this.nuevaImagen = lector.result as string;
+        this.nuevaImagen = lector.result as string; // Convertimos a base64 para vista previa
       };
-      lector.readAsDataURL(input.files[0]);
+  
+      lector.readAsDataURL(file);
+    } else {
+      console.warn('No se seleccionó ningún archivo.');
     }
   }
+  
 
   agregarPublicacion(): void {
-    if (!this.nuevaPublicacion.trim()) {
-      console.warn('El campo de publicación está vacío.');
+    if (!this.nuevaPublicacion.trim() && !this.nuevaImagen) {
+      console.warn('Debe ingresar texto o seleccionar una imagen para publicar.');
       return;
     }
-
+  
     if (!this.usuario.nombre || !this.usuario.uid) {
       console.error('No se puede agregar publicación sin un usuario válido.');
       return;
     }
-
+  
     const nuevaPub = {
       descripcion: this.nuevaPublicacion,
       imagen: this.nuevaImagen || '',
@@ -98,7 +104,7 @@ export class PublicacionesComponent implements OnInit {
       fecha: new Date(),
       likes: [],
     };
-
+  
     this.publicacionesService
       .agregarPublicacion(nuevaPub)
       .then(() => {
@@ -108,6 +114,7 @@ export class PublicacionesComponent implements OnInit {
       })
       .catch((error) => console.error('Error al agregar publicación:', error));
   }
+  
 
   agregarMeGusta(publicacion: any): void {
     const usuarioId = this.usuario.uid;
