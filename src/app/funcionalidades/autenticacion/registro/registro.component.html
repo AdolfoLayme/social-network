@@ -39,6 +39,18 @@
           required
         />
       </div>
+      <div class="input-group">
+        <label for="confirm-password">Confirmar Contraseña</label>
+        <input
+          type="password"
+          id="confirm-password"
+          placeholder="Confirma tu contraseña"
+          [(ngModel)]="confirmPassword"
+          name="confirm-password"
+          required
+        />
+      </div>
+      <p *ngIf="mensajeError" class="error-message">{{ mensajeError }}</p>
       <button type="submit" class="btn-primary">Registrarse</button>
     </form>
     <p class="login-link" *ngIf="!cargando">

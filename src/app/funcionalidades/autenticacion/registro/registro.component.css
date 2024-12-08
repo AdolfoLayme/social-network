@@ -81,6 +81,17 @@ form {
 .login-link a:hover {
   text-decoration: underline;
 }
+
+/* Mensaje de error */
+.error-message {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
 /* Mensaje de Carga */
 .spinner-container {
   text-align: center;
@@ -161,8 +172,4 @@ form {
   margin: 0;
   font-size: 1.2rem;
   color: #2c3e50;
-}
-
-.modal-content p {
-  margin: 10px 0;
 }
