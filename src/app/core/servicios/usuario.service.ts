@@ -14,34 +14,35 @@ import {
   updateDoc,
 } from '@angular/fire/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { BehaviorSubject } from 'rxjs'; // Importación necesaria
+import { BehaviorSubject } from 'rxjs';
 import { Usuario } from '../interfaces/usuario';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-  private perfilActualizadoSubject = new BehaviorSubject<boolean>(false);
+
+  private perfilActualizadoSubject = new BehaviorSubject<any>(null);
   perfilActualizado$ = this.perfilActualizadoSubject.asObservable();
 
   constructor(private auth: Auth, private firestore: Firestore) {}
 
-  /** Notificar que el perfil fue actualizado */
-  notificarPerfilActualizado(): void {
-    this.perfilActualizadoSubject.next(true);
+
+  notificarPerfilActualizado(usuario: any): void {
+    this.perfilActualizadoSubject.next(usuario);
   }
 
-  /** Registro de usuarios */
+
   register(email: string, password: string): Promise<UserCredential> {
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 
-  /** Inicio de sesión */
+
   login(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  /** Cerrar sesión */
+
   async logout(): Promise<void> {
     try {
       await this.auth.signOut();
@@ -52,19 +53,20 @@ export class UsuarioService {
     }
   }
 
-  /** Obtener el usuario actual */
+
   getUsuarioActual(): Promise<User | null> {
     return new Promise((resolve) => {
       onAuthStateChanged(this.auth, (user) => resolve(user));
     });
   }
+  
+  
 
-  /** Generar un handle a partir del email */
   generarHandle(email: string | undefined): string {
     return email ? email.split('@')[0] : 'Usuario';
   }
 
-  /** Obtener datos del usuario por UID */
+
   async obtenerDatosUsuario(uid: string): Promise<Usuario | null> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -83,18 +85,17 @@ export class UsuarioService {
     }
   }
 
-  /** Actualizar datos del usuario */
   async actualizarUsuario(uid: string, datos: Partial<Usuario>): Promise<void> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
       await updateDoc(usuarioRef, datos);
+      this.notificarPerfilActualizado({ uid, ...datos });
     } catch (error) {
       console.error('Error al actualizar datos del usuario:', error);
       throw new Error('No se pudo actualizar el usuario.');
     }
   }
 
-  /** Verificar si el perfil está completado */
   async esPerfilCompletado(uid: string): Promise<boolean> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -106,7 +107,6 @@ export class UsuarioService {
     }
   }
 
-  /** Subir una imagen al almacenamiento de Firebase */
   async subirImagen(tipo: string, archivo: File): Promise<string> {
     try {
       const storage = getStorage();
@@ -119,7 +119,6 @@ export class UsuarioService {
     }
   }
 
-  /** Actualizar el perfil con datos nuevos */
   async actualizarPerfil(datosUsuario: Partial<Usuario>): Promise<void> {
     try {
       const usuarioActual = await this.getUsuarioActual();
@@ -127,9 +126,7 @@ export class UsuarioService {
         const usuarioRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
         datosUsuario.handle = this.generarHandle(datosUsuario.email ?? usuarioActual.email ?? '');
         await updateDoc(usuarioRef, datosUsuario);
-
-        // Notificar que el perfil fue actualizado
-        this.notificarPerfilActualizado();
+        this.notificarPerfilActualizado(datosUsuario);
       } else {
         console.error('No hay usuario autenticado para actualizar el perfil.');
         throw new Error('Usuario no autenticado.');
