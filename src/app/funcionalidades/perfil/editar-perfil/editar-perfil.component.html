@@ -2,16 +2,17 @@
     <div class="editar-perfil-content">
       <!-- Fondo del perfil -->
       <div class="background-container">
-        <img 
-          [src]="formularioPerfil.get('fondo')?.value || '/icons/icono-fondo.png'" 
-          alt="Fondo del perfil" 
-          class="background-image" 
+        <img
+          [src]="formularioPerfil.get('fondo')?.value || '/icons/icono-perfil.png'"
+          alt="Fondo del perfil"
+          class="background-image"
         />
         <label class="edit-btn edit-background">
           <input type="file" accept="image/*" (change)="actualizarFondo($event)" hidden />
           📷
         </label>
       </div>
+      
   
       <!-- Foto de perfil -->
       <div class="profile-picture-container">

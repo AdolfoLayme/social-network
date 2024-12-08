@@ -5,7 +5,7 @@ export interface Usuario {
     foto?: string; 
     handle?: string; 
     biografia?: string; 
-    fondoPerfil?: string; 
+    fondo?: string; 
     [key: string]: any; 
   }
   

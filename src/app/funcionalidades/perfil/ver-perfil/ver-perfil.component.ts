@@ -18,8 +18,8 @@ export class VerPerfilComponent implements OnInit {
     nombre: '',
     handle: '',
     biografia: '',
-    fondoPerfil: '/icons/icono-perfil.png',
-    fotoPerfil: '/icons/icono-perfil.png',
+    foto: [''],
+    fondo: [''],
     publicaciones: [],
   };
 
@@ -36,25 +36,31 @@ export class VerPerfilComponent implements OnInit {
     this.cargarPublicacionesUsuario();
   }
 
-  cargarDatosPerfil(): void {
-    this.cargando = true;
-    this.usuarioService.getUsuarioActual().then((usuario) => {
-      if (usuario?.uid) {
-        this.usuarioService.obtenerDatosUsuario(usuario.uid).then((datosUsuario) => {
-          if (datosUsuario) {
-            datosUsuario.handle =
-              datosUsuario.handle || this.usuarioService.generarHandle(usuario.email || '');
-            this.usuario = { ...this.usuario, ...datosUsuario }; 
-          } else {
-            console.warn('No se pudieron obtener los datos del usuario.');
-          }
-          this.cargando = false;
-        });
-      } else {
-        this.cargando = false;
+  async cargarDatosPerfil(): Promise<void> {
+    try {
+      this.cargando = true;
+      const usuarioActual = await this.usuarioService.getUsuarioActual();
+      if (usuarioActual?.uid) {
+        const datosUsuario = await this.usuarioService.obtenerDatosUsuario(usuarioActual.uid);
+        if (datosUsuario) {
+          this.usuario = {
+            ...this.usuario, 
+            ...datosUsuario, 
+            fotoPerfil: datosUsuario.foto || '/assets/icons/icono-perfil.png',
+            fondo: datosUsuario.fondo || '/assets/icons/icono-fondo.png',
+            handle: datosUsuario.handle || this.usuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''), 
+          };
+        } else {
+          console.warn('No se pudieron obtener los datos del usuario.');
+        }
       }
-    });
+    } catch (error) {
+      console.error('Error al cargar datos del usuario:', error);
+    } finally {
+      this.cargando = false;
+    }
   }
+  
  
   async cargarPublicacionesUsuario(): Promise<void> {
     try {

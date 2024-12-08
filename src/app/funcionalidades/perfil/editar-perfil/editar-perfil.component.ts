@@ -63,12 +63,15 @@ export class EditarPerfilComponent implements OnInit {
       reader.readAsDataURL(input.files[0]);
     }
   }
+  
+  
+  
 
   async guardarCambios() {
     if (this.formularioPerfil.valid && this.usuario?.uid) {
       this.cargando = true; 
       try {
-        const datosActualizados = this.formularioPerfil.value;
+        const datosActualizados = this.formularioPerfil.value; 
         await this.usuarioService.actualizarUsuario(this.usuario.uid, datosActualizados);
         this.usuario = { ...this.usuario, ...datosActualizados };
   
@@ -85,6 +88,7 @@ export class EditarPerfilComponent implements OnInit {
       alert('Por favor, completa todos los campos requeridos.');
     }
   }
+  
   
   
 

@@ -96,12 +96,13 @@ export class UsuarioService {
       const storage = getStorage();
       const storageRef = ref(storage, `usuarios/${tipo}/${archivo.name}`);
       await uploadBytes(storageRef, archivo);
-      return await getDownloadURL(storageRef);
+      return await getDownloadURL(storageRef); 
     } catch (error) {
       console.error('Error al subir imagen:', error);
       throw error;
     }
   }
+  
 
   async actualizarPerfil(datosUsuario: Partial<Usuario>): Promise<void> {
     try {
@@ -118,9 +119,4 @@ export class UsuarioService {
       throw error;
     }
   }
-  
-  
-  
-  
-  
 }
