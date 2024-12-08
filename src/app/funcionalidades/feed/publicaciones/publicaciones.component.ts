@@ -56,7 +56,6 @@ export class PublicacionesComponent implements OnInit {
   
         this.publicaciones = publicaciones.map((post) => {
           if (post.usuarioUid === usuarioActual.uid) {
-            // Actualiza dinámicamente el nombre del usuario en las publicaciones
             post.usuario = datosUsuario?.nombre || 'Usuario Anónimo';
           }
           return post;

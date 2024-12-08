@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  user,
 } from '@angular/fire/auth';
 import {
   Firestore,
@@ -40,17 +41,20 @@ export class UsuarioService {
       onAuthStateChanged(this.auth, (user) => resolve(user));
     });
   }
-  private generarHandle(email: string): string {
-  if (!email) return '';
-  return email.split('@')[0];
-}
+  public generarHandle(email: string | undefined): string {
+    if (!email) return '';
+    return email.split('@')[0];
+  }
+
 
   async obtenerDatosUsuario(uid: string): Promise<Usuario | null> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
       const usuarioSnapshot = await getDoc(usuarioRef);
       if (usuarioSnapshot.exists()) {
-        return usuarioSnapshot.data() as Usuario;
+        const datosUsuario = usuarioSnapshot.data() as Usuario;
+        datosUsuario.handle = datosUsuario.handle || this.generarHandle(datosUsuario.email);
+        return datosUsuario;
       } else {
         console.warn(`El usuario con UID ${uid} no existe.`);
         return null;
@@ -61,7 +65,7 @@ export class UsuarioService {
     }
   }
   
-
+ 
   async actualizarUsuario(uid: string, datos: Record<string, any>): Promise<void> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -71,10 +75,7 @@ export class UsuarioService {
       throw error;
     }
   }
-  
-  
-  
-
+ 
   async esPerfilCompletado(uid: string): Promise<boolean> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -102,11 +103,12 @@ export class UsuarioService {
     }
   }
 
-  async actualizarPerfil(datosUsuario: Record<string, any>): Promise<void> {
+  async actualizarPerfil(datosUsuario: Partial<Usuario>): Promise<void> {
     try {
       const usuarioActual = await this.getUsuarioActual();
       if (usuarioActual?.uid) {
         const usuarioRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
+        datosUsuario.handle = this.generarHandle(datosUsuario.email ?? usuarioActual.email ?? '');
         await updateDoc(usuarioRef, datosUsuario);
       } else {
         console.error('No hay usuario autenticado para actualizar el perfil.');
@@ -116,4 +118,9 @@ export class UsuarioService {
       throw error;
     }
   }
+  
+  
+  
+  
+  
 }
