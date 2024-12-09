@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { UsuarioService } from '../../../core/servicios/usuario.service';
 import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
 import { EditarPerfilComponent } from '../editar-perfil/editar-perfil.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-ver-perfil',
@@ -13,7 +14,7 @@ import { EditarPerfilComponent } from '../editar-perfil/editar-perfil.component'
   templateUrl: './ver-perfil.component.html',
   styleUrls: ['./ver-perfil.component.css']
 })
-export class VerPerfilComponent implements OnInit {
+export class VerPerfilComponent implements OnInit, OnDestroy {
   usuario: any = {
     nombre: '',
     handle: '',
@@ -26,6 +27,8 @@ export class VerPerfilComponent implements OnInit {
   cargando: boolean = false;
   mostrarModal: boolean = false;
 
+  private perfilSubscription: Subscription | null = null;
+
   constructor(
     private usuarioService: UsuarioService,
     private publicacionesService: PublicacionesService
@@ -34,6 +37,11 @@ export class VerPerfilComponent implements OnInit {
   ngOnInit(): void {
     this.cargarDatosPerfil();
     this.cargarPublicacionesUsuario();
+    this.perfilSubscription = this.usuarioService.perfilActualizado$.subscribe((usuarioActualizado) => {
+      if (usuarioActualizado) {
+        this.usuario = { ...this.usuario, ...usuarioActualizado }; 
+      }
+    });
   }
 
   async cargarDatosPerfil(): Promise<void> {
@@ -60,7 +68,6 @@ export class VerPerfilComponent implements OnInit {
       this.cargando = false;
     }
   }
-  
 
   async cargarPublicacionesUsuario(): Promise<void> {
     try {
@@ -92,5 +99,11 @@ export class VerPerfilComponent implements OnInit {
   actualizarDatosPerfil(): void {
     this.cargarDatosPerfil();
     this.cargarPublicacionesUsuario();
+  }
+
+  ngOnDestroy(): void {
+    if (this.perfilSubscription) {
+      this.perfilSubscription.unsubscribe();
+    }
   }
 }

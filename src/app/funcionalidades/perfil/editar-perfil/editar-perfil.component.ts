@@ -19,7 +19,7 @@ export class EditarPerfilComponent implements OnInit {
   constructor(private fb: FormBuilder, private usuarioService: UsuarioService) {
     this.formularioPerfil = this.fb.group({
       nombre: ['', [Validators.required]],
-      biografia: ['', [Validators.required, Validators.maxLength(160)]],
+      biografia: [''],
       foto: [''],
       fondo: [''],
     });
