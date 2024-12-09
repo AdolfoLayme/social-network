@@ -20,7 +20,7 @@ export class VerPerfilComponent implements OnInit, OnDestroy {
     handle: '',
     biografia: '',
     foto: '/icons/icono-perfil.png',
-    fondo: '/icons/icono-fondo.png',
+    fondo: '',
     publicaciones: [],
   };
 
@@ -55,7 +55,7 @@ export class VerPerfilComponent implements OnInit, OnDestroy {
             ...this.usuario,
             ...datosUsuario,
             foto: datosUsuario.foto || '/icons/icono-perfil.png',
-            fondo: datosUsuario.fondo || '/icons/icono-fondo.png',
+            fondo: datosUsuario.fondo || '',
             handle: datosUsuario.handle || this.usuarioService.generarHandle(usuarioActual.email || ''),
           };
         } else {
