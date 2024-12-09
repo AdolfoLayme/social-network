@@ -1,3 +1,29 @@
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 15px;
+}
+
+.argusocial {
+  font-size: 2.5rem;
+  font-family: "Pacifico", cursive;
+  color: #0099FF;
+}
+
+.dot {
+  font-size: 2.5rem;
+  color: #FF3E4D;
+}
+
+.social {
+  font-size: 2.5rem;
+  font-family: "Roboto", sans-serif;
+  color: #333333;
+}
+
+
 /* Página principal */
 .pagina-principal {
   display: flex;

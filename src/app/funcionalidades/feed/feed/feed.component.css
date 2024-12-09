@@ -25,10 +25,12 @@ html {
   align-items: center;
   padding: 1rem;
   box-sizing: border-box;
+  display: flex;
+  justify-content: space-between; 
+  align-items: stretch;
 }
 
 .menu-lateral .logo {
-  font-size: 24px;
   font-weight: bold;
   margin-bottom: 2rem;
 }
@@ -44,15 +46,7 @@ html {
   align-items: center;
   padding: 10px;
   cursor: pointer;
-}
-
-.menu-opciones li i {
-  font-size: 20px;
-  margin-right: 10px;
-}
-
-.menu-opciones li span {
-  font-size: 16px;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .menu-opciones li:hover {
@@ -60,17 +54,79 @@ html {
   border-radius: 8px;
 }
 
+.menu-opciones li svg {
+  width: 24px;
+  height: 24px;
+  margin-right: 15px;
+  fill: #000000;
+}
+
+.menu-opciones li span {
+  font-size: 16px;
+}
+
+.menu-opciones li.active {
+  background-color: #2196f3;
+  color: #ffffff;
+  border-radius: 8px;
+}
+
 .foto-usuario {
-  margin-top: auto;
-  text-align: center;
-  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: auto; 
+}
+
+.foto-usuario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+  background-color: #ffffff; 
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: auto; 
 }
 
 .foto-usuario img {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+.usuario-detalle {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  color: #000000; 
+}
+
+.nombre-usuario {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.handle {
+  font-size: 15px;
+  color: #71767b;
+  margin: 0;
+}
+
+
+.foto-usuario img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 5px;
 }
 
 .foto-usuario .usuario-info {
@@ -81,19 +137,17 @@ html {
   margin: 0;
 }
 
-/* Contenido */
+
 .contenido {
   display: flex;
   flex-direction: column;
-  width: calc(100% - 250px); 
-  margin-left: 250px; /* Reserva espacio para la barra lateral */
+  width: calc(100% - 250px);
+  margin-left: 250px;
   padding: 20px;
   box-sizing: border-box;
-  height: 100vh; 
-  overflow-y: auto; 
+  height: 100vh;
+  overflow-y: auto;
 }
-
-/*opcion de cerrar sesion*/
 
 .btn-opciones {
   background: none;
@@ -113,13 +167,12 @@ html {
   background-color: #e6e6e6;
 }
 
-/* Estilo del menú emergente */
 .menu-opciones-usuario {
   position: absolute;
   bottom: 80px;
   right: 5px;
-  background: #1a1a1a; 
-  color: #ffffff; 
+  background: #1a1a1a;
+  color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   padding: 10px;
@@ -129,12 +182,11 @@ html {
   flex-direction: column;
   animation: fadeIn 0.3s ease;
   transition: opacity 0.3s ease-in-out;
-  background: #2c2c2c; 
+  background: #2c2c2c;
   border: 1px solid #444;
   position: absolute;
 }
 
-/* Animación de aparición */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -146,7 +198,6 @@ html {
   }
 }
 
-/* Lista del menú */
 .menu-opciones-usuario ul {
   list-style: none;
   margin: 0;
@@ -156,7 +207,7 @@ html {
 .menu-opciones-usuario li {
   padding: 15px 20px;
   cursor: pointer;
-  border-bottom: 1px solid #333; 
+  border-bottom: 1px solid #333;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -171,15 +222,12 @@ html {
   border-radius: 4px;
 }
 
-
 .menu-opciones-usuario li span {
   font-weight: bold;
   color: #ffffff;
   margin-left: 10px;
 }
 
-
 .menu-opciones-usuario li span:hover {
   text-decoration: underline;
 }
-
