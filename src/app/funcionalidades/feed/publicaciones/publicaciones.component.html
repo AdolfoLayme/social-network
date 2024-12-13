@@ -41,13 +41,17 @@
     #publicacion
     [attr.data-id]="post.id"
   >
-    <div class="post-header">
+  <div class="post-header">
+    <a [routerLink]="['/feed/perfil', post.usuarioUid]">
       <img [src]="post.usuarioImagen" alt="Foto de perfil" class="profile-pic" />
-      <div class="post-info">
+    </a>
+    <div class="post-info">
+      <a [routerLink]="['/feed/perfil', post.usuarioUid]" class="usuario-link">
         <p class="usuario">{{ post.usuario }}</p>
-        <p class="tiempo">{{ post.fecha?.toDate() | date: 'short' }}</p>
-      </div>
+      </a>
+      <p class="tiempo">{{ post.fecha?.toDate() | date: 'short' }}</p>
     </div>
+  </div>  
     <p class="descripcion">{{ post.descripcion }}</p>
     <img *ngIf="post.imagen" [src]="post.imagen" alt="Publicación" class="post-image" />
     <div class="post-footer">

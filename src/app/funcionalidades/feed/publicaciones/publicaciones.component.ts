@@ -4,11 +4,12 @@ import { CommonModule } from '@angular/common';
 import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
 import { UsuarioService } from '../../../core/servicios/usuario.service';
 import { ComentariosComponent } from '../comentarios/comentarios.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-publicaciones',
   standalone: true,
-  imports: [CommonModule, FormsModule, ComentariosComponent],
+  imports: [CommonModule, FormsModule, ComentariosComponent, RouterModule],
   templateUrl: './publicaciones.component.html',
   styleUrls: ['./publicaciones.component.css'],
 })
@@ -74,7 +75,7 @@ export class PublicacionesComponent implements OnInit {
       const lector = new FileReader();
   
       lector.onload = () => {
-        this.nuevaImagen = lector.result as string; // Convertimos a base64 para vista previa
+        this.nuevaImagen = lector.result as string; 
       };
   
       lector.readAsDataURL(file);

@@ -1,9 +1,6 @@
 <div class="perfil" *ngIf="!mostrarModal">
   <!-- Fondo del perfil -->
-  <div
-  class="fondo-perfil"
-  [style.backgroundImage]="'url(' + usuario.fondo + ')'"
->
+  <div class="fondo-perfil" [style.backgroundImage]="'url(' + usuario.fondo + ')'">
 
     <img [src]="usuario.foto" alt="Foto de perfil" class="foto-perfil" />
   </div>
@@ -11,7 +8,8 @@
   <!-- Información del usuario -->
   <div class="info-usuario">
     <h1>{{ usuario.nombre }}</h1>
-    <p class="handle">&#64;{{ usuario.handle }}</p>
+    <p *ngIf="esPropioPerfil" class="handle">&#64;{{ usuario.handle }}</p>
+    <p *ngIf="!esPropioPerfil" class="handle">{{ usuario.handle }}</p>
     <p class="biografia">{{ usuario.biografia }}</p>
     <button class="btn-editar-perfil" (click)="abrirModal()">
       Editar perfil
@@ -39,9 +37,6 @@
 <div class="modal-backdrop" *ngIf="mostrarModal">
   <div class="modal">
     <button class="btn-cerrar" (click)="cerrarModal()">&#x2715;</button>
-    <app-editar-perfil
-      [usuario]="usuario"
-      (cerrar)="cerrarModal()"
-    ></app-editar-perfil>
+    <app-editar-perfil [usuario]="usuario" (cerrar)="cerrarModal()"></app-editar-perfil>
   </div>
 </div>

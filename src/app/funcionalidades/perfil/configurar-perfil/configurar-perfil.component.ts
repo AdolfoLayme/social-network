@@ -48,10 +48,15 @@ export class ConfigurarPerfilComponent {
   async ngOnInit() {
     try {
       const usuarioActual = await this.usuarioService.getUsuarioActual();
+      this.usuarioService.getUsuarioActual();
       if (usuarioActual?.uid) {
         const docRef = doc(this.firestore, `usuarios/${usuarioActual.uid}`);
         const datosDoc = await getDoc(docRef);
-
+        const datosUsuario = await
+        this.usuarioService.obtenerDatosUsuario(
+          usuarioActual.uid
+        );
+        this.nombreCompleto = datosUsuario?.nombre || 'Sin nombre';
         if (datosDoc.exists()) {
           const datosUsuario = datosDoc.data();
           this.nombreCompleto = datosUsuario['nombre'] || usuarioActual.displayName || '';

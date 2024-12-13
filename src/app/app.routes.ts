@@ -72,6 +72,13 @@ export const routes: Routes = [
         ],
       },
       {
+        path: 'perfil/:uid', 
+        loadComponent: () =>
+          import('./funcionalidades/perfil/ver-perfil/ver-perfil.component').then(
+            (m) => m.VerPerfilComponent
+          ),
+      },  
+      {
         path: 'grupos',
         loadComponent: () =>
           import('./funcionalidades/feed/grupos/grupos.component').then(

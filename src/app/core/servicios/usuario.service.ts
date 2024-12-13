@@ -32,10 +32,12 @@ export class UsuarioService {
   }
 
 
-  register(email: string, password: string): Promise<UserCredential> {
-    return createUserWithEmailAndPassword(this.auth, email, password);
+  async register(email: string, password: string): Promise<UserCredential> {
+    const credenciales = await createUserWithEmailAndPassword(this.auth, email, password);
+    return credenciales;
   }
-
+  
+  
 
   login(email: string, password: string): Promise<UserCredential> {
     return signInWithEmailAndPassword(this.auth, email, password);
@@ -64,7 +66,6 @@ export class UsuarioService {
     if (!email) return '';
     return email.split('@')[0];
   }
-  
 
   async obtenerDatosUsuario(uid: string): Promise<Usuario | null> {
     try {
@@ -84,8 +85,6 @@ export class UsuarioService {
     }
   }
   
-
-  
   async actualizarUsuario(uid: string, datos: Partial<Usuario>): Promise<void> {
     try {
       const usuarioRef = doc(this.firestore, `usuarios/${uid}`);
@@ -96,8 +95,6 @@ export class UsuarioService {
       throw new Error('No se pudo actualizar el usuario.');
     }
   }
-
-
   async subirImagen(tipo: string, archivo: File): Promise<string> {
     try {
       const storage = getStorage();

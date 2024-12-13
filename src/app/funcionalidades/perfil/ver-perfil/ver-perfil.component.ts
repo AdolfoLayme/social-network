@@ -6,11 +6,14 @@ import { UsuarioService } from '../../../core/servicios/usuario.service';
 import { PublicacionesService } from '../../../core/servicios/publicaciones.service';
 import { EditarPerfilComponent } from '../editar-perfil/editar-perfil.component';
 import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ParamMap } from '@angular/router';
+
 
 @Component({
   selector: 'app-ver-perfil',
   standalone: true,
-  imports: [RouterModule, NgFor, CommonModule, EditarPerfilComponent],
+  imports: [RouterModule, NgFor, CommonModule, EditarPerfilComponent,],
   templateUrl: './ver-perfil.component.html',
   styleUrls: ['./ver-perfil.component.css']
 })
@@ -26,22 +29,36 @@ export class VerPerfilComponent implements OnInit, OnDestroy {
 
   cargando: boolean = false;
   mostrarModal: boolean = false;
+  esPropioPerfil: boolean = true;
+
 
   private perfilSubscription: Subscription | null = null;
 
   constructor(
     private usuarioService: UsuarioService,
-    private publicacionesService: PublicacionesService
+    private publicacionesService: PublicacionesService,
+    private route: ActivatedRoute 
   ) {}
 
   ngOnInit(): void {
-    this.cargarDatosPerfil();
-    this.cargarPublicacionesUsuario();
-    this.perfilSubscription = this.usuarioService.perfilActualizado$.subscribe((usuarioActualizado) => {
-      if (usuarioActualizado) {
-        this.usuario = { ...this.usuario, ...usuarioActualizado }; 
+     this.route.paramMap.subscribe(async (params: ParamMap) => {
+      const uid = params.get('uid');
+      if (uid) {
+        this.esPropioPerfil = false;
+        await this.cargarPerfilDeOtroUsuario(uid);
+      } else {
+        this.esPropioPerfil = true;
+        await this.cargarDatosPerfil();
+        await this.cargarPublicacionesUsuario();
       }
     });
+    this.perfilSubscription = this.usuarioService.perfilActualizado$.subscribe(
+      (usuarioActualizado) => {
+        if (usuarioActualizado) {
+          this.usuario = { ...this.usuario, ...usuarioActualizado };
+        }
+      }
+    );
   }
 
   async cargarDatosPerfil(): Promise<void> {
@@ -68,7 +85,27 @@ export class VerPerfilComponent implements OnInit, OnDestroy {
       this.cargando = false;
     }
   }
+  async cargarPerfilDeOtroUsuario(uid: string): Promise<void> {
+    try {
+      this.cargando = true;
+      const datosUsuario = await this.usuarioService.obtenerDatosUsuario(uid);
+      if (datosUsuario) {
+        this.usuario = {
+          ...datosUsuario,
+          foto: datosUsuario.foto || '/icons/icono-perfil.png',
+          fondo: datosUsuario.fondo || '',
+          handle: datosUsuario.handle || this.usuarioService.generarHandle(datosUsuario.email || ''),
+        };
+      } else {
+        console.warn(`El usuario con UID ${uid} no existe.`);
+      }
+    } catch (error) {
+      console.error('Error al cargar el perfil de otro usuario:', error);
+    } finally {
+      this.cargando = false;
 
+    }
+  }
   async cargarPublicacionesUsuario(): Promise<void> {
     try {
       const usuarioActual = await this.usuarioService.getUsuarioActual();
@@ -87,6 +124,7 @@ export class VerPerfilComponent implements OnInit, OnDestroy {
       console.error('Error al cargar publicaciones del usuario:', error);
     }
   }
+  
 
   abrirModal(): void {
     this.mostrarModal = true;
