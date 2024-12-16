@@ -25,8 +25,19 @@
         <!-- Grupo para Contraseña -->
         <div class="grupo-entrada">
           <label for="contrasena">Contraseña</label>
-          <input type="password" id="contrasena" placeholder="Ingresa tu contraseña" [(ngModel)]="password"
-            name="password" required />
+          <div class="input-con-icono">
+            <input
+              [type]="mostrarContrasena ? 'text' : 'password'"
+              id="contrasena"
+              placeholder="Ingresa tu contraseña"
+              [(ngModel)]="password"
+              name="password"
+              required
+            />
+            <button type="button" class="toggle-password" (click)="toggleMostrarContrasena()">
+              <i [class]="mostrarContrasena ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"></i>
+            </button>
+          </div>
         </div>
         <!-- Botón de Iniciar Sesión Normal -->
         <button type="submit" class="boton-primario" [disabled]="cargando || correoInvalido">

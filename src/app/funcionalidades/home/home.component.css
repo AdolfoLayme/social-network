@@ -218,3 +218,27 @@
   color: #2c3e50;
   font-weight: 500;
 }
+.input-con-icono {
+  position: relative;
+}
+
+.input-con-icono input {
+  width: 100%;
+  padding-right: 40px; 
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+.toggle-password:hover {
+  color: #3498db;
+}

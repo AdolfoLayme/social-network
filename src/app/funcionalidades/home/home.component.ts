@@ -18,6 +18,7 @@ export class HomeComponent {
   mensajeError: string = '';
   correoInvalido: boolean = false;
   cargando: boolean = false;
+  mostrarContrasena: boolean = false;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -25,6 +26,9 @@ export class HomeComponent {
     private authService: AutenticacionService
   ) { }
 
+  toggleMostrarContrasena() {
+  this.mostrarContrasena = !this.mostrarContrasena;
+}
   iniciarSesionGoogle() {
     this.cargando = true;
     this.authService.loginConGoogle()
