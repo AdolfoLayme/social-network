@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule, Router } from '@angular/router';
 import { UsuarioService } from '../../core/servicios/usuario.service';
 import { CommonModule } from '@angular/common';
+import { AutenticacionService } from '../../core/servicios/autenticacion.service';
 
 @Component({
   selector: 'app-home',
@@ -18,13 +19,33 @@ export class HomeComponent {
   correoInvalido: boolean = false;
   cargando: boolean = false;
 
-  constructor(private usuarioService: UsuarioService, private router: Router) {}
+  constructor(
+    private usuarioService: UsuarioService,
+    private router: Router,
+    private authService: AutenticacionService
+  ) { }
+
+  iniciarSesionGoogle() {
+    this.cargando = true;
+    this.authService.loginConGoogle()
+      .then((user) => {
+        console.log('Usuario autenticado:', user);
+        this.router.navigate(['/configurar-perfil']);
+      })
+      .catch((error) => {
+        console.error('Error al iniciar sesión con Google:', error);
+        this.mensajeError = 'Error al iniciar sesión con Google.';
+      })
+      .finally(() => {
+        this.cargando = false;
+      });
+  }
 
   validarCorreoInstitucional(): void {
     const correoRegex = /^[a-zA-Z0-9._%+-]+@unajma\.edu\.pe$/;
     this.correoInvalido = !correoRegex.test(this.email);
   }
-  
+
 
   async onLogin() {
     this.mensajeError = '';
