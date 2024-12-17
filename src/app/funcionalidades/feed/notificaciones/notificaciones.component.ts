@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { NotificacionesService } from '../../../core/servicios/notificaciones.service';
+import { UsuarioService } from '../../../core/servicios/usuario.service';
 
 @Component({
   selector: 'app-notificaciones',
@@ -10,50 +12,41 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './notificaciones.component.css'
 })
 export class NotificacionesComponent {
-// Filtros de notificaciones
-filtros: string[] = ['Todas', 'Verificadas', 'Menciones'];
-filtroSeleccionado: string = 'Todas';
+notificaciones: any[] = [];
+idUsuarioActual = 'id-usuario-actual'; 
 
-// Lista de notificaciones
-notificaciones = [
-  {
-    titulo: 'SpaceX lanzó una nueva misión',
-    descripcion: 'Starlink Mission en vivo ahora.',
-    icono: '/assets/notificacion1.jpg',
-    fecha: 'Hace 10 minutos',
-    tipo: 'Verificadas'
-  },
-  {
-    titulo: 'Nueva mención',
-    descripcion: 'Te mencionaron en un comentario.',
-    icono: '/assets/notificacion2.jpg',
-    fecha: 'Hace 1 hora',
-    tipo: 'Menciones'
-  },
-  {
-    titulo: 'Solicitud de amistad',
-    descripcion: 'Tienes una nueva solicitud de amistad.',
-    icono: '/assets/notificacion3.jpg',
-    fecha: 'Hace 2 horas',
-    tipo: 'Todas'
+constructor(
+  private notificacionesService: NotificacionesService,
+  private usuarioService: UsuarioService 
+) {}
+
+async ngOnInit() {
+  try {
+    const usuarioActual = await this.usuarioService.getUsuarioActual();
+    if (usuarioActual?.uid) {
+      this.idUsuarioActual = usuarioActual.uid;
+      await this.cargarNotificaciones();
+    }
+  } catch (error) {
+    console.error('Error al obtener el usuario actual:', error);
   }
-];
-
-// Notificaciones filtradas
-notificacionesFiltradas = this.notificaciones;
-
-// Filtrar notificaciones
-filtrarNotificaciones(filtro: string): void {
-  this.filtroSeleccionado = filtro;
-  this.notificacionesFiltradas =
-    filtro === 'Todas'
-      ? this.notificaciones
-      : this.notificaciones.filter((notificacion) => notificacion.tipo === filtro);
 }
 
-// Marcar una notificación como leída
-marcarComoLeida(notificacion: any): void {
-  alert(`Notificación "${notificacion.titulo}" marcada como leída.`);
+async cargarNotificaciones() {
+  try {
+    this.notificaciones = await this.notificacionesService.obtenerNotificaciones(this.idUsuarioActual);
+    console.log('Notificaciones cargadas:', this.notificaciones);
+  } catch (error) {
+    console.error('Error al cargar notificaciones:', error);
+  }
+}
 
+async marcarComoVista(idNotificacion: string) {
+  try {
+    await this.notificacionesService.marcarComoVista(idNotificacion);
+    this.cargarNotificaciones();
+  } catch (error) {
+    console.error('Error al marcar como vista:', error);
+  }
 }
 }

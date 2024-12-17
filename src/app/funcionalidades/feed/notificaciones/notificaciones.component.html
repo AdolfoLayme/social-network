@@ -1,23 +1,26 @@
-<div class="filtros-notificaciones">
-    <button
-      *ngFor="let filtro of filtros"
-      [class.active]="filtro === filtroSeleccionado"
-      (click)="filtrarNotificaciones(filtro)"
+<div class="notificaciones-container">
+  <h2>Notificaciones</h2>
+  <div *ngIf="notificaciones.length > 0; else noNotificaciones">
+    <div 
+      *ngFor="let notificacion of notificaciones" 
+      class="notificacion-item"
+      [class.no-vista]="!notificacion.visto"
     >
-      {{ filtro }}
-    </button>
-  </div>
-  
-  <div class="lista-notificaciones">
-    <h2>Notificaciones</h2>
-    <div *ngFor="let notificacion of notificacionesFiltradas" class="notificacion">
-      <img [src]="notificacion.icono" alt="Icono de notificación" />
-      <div class="info">
-        <p class="titulo">{{ notificacion.titulo }}</p>
-        <p class="descripcion">{{ notificacion.descripcion }}</p>
-        <p class="fecha">{{ notificacion.fecha }}</p>
+      <div class="icono-notificacion">
+        <span class="material-icons"> notifications_active </span>
       </div>
-      <button (click)="marcarComoLeida(notificacion)">Marcar como leída</button>
+      <div class="contenido-notificacion">
+        <p>
+          A {{ notificacion.nombreUsuarioAccion }} le gustó tu publicación.
+        </p>
+        <small>{{ notificacion.fecha.toDate() | date: 'short' }}</small>
+      </div>
+      <button *ngIf="!notificacion.visto" (click)="marcarComoVista(notificacion.id)">
+        Marcar como vista
+      </button>
     </div>
   </div>
-  
+  <ng-template #noNotificaciones>
+    <p>No tienes notificaciones.</p>
+  </ng-template>
+</div>

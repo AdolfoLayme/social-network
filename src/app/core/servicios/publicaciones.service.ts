@@ -12,12 +12,12 @@ import {
 } from '@angular/fire/firestore';
 import { Publicaciones } from '../interfaces/publicaciones';
 import { UsuarioService } from './usuario.service';
-
+import { NotificacionesService } from './notificaciones.service';
 @Injectable({
   providedIn: 'root'
 })
 export class PublicacionesService {
-  constructor(private firestore: Firestore, private usuarioService: UsuarioService) {}
+  constructor(private firestore: Firestore, private usuarioService: UsuarioService, private notificacionesService: NotificacionesService ) {}
 
   async agregarPublicacion(publicacion: any): Promise<void> {
     try {
@@ -36,8 +36,6 @@ export class PublicacionesService {
         const coleccion = collection(this.firestore, 'publicaciones');
         const consulta = query(coleccion, orderBy('fecha', 'desc'));
         const snapshot = await getDocs(consulta);
-
-        // Mapea las publicaciones
         const publicaciones: Publicaciones[] = await Promise.all(
             snapshot.docs.map(async (docSnap) => {
                 const publicacion = docSnap.data() as Publicaciones;
@@ -63,7 +61,20 @@ export class PublicacionesService {
     }
 }
 
-  
+async agregarMeGusta(publicacion: any, usuarioId: string): Promise<void> {
+  if (!publicacion.likes.includes(usuarioId)) {
+    publicacion.likes.push(usuarioId);
+    const referenciaDoc = doc(this.firestore, `publicaciones/${publicacion.id}`);
+    await updateDoc(referenciaDoc, { likes: publicacion.likes });
+    const mensaje = `A ${publicacion.usuario} le gustó tu publicación.`;
+    await this.notificacionesService.agregarNotificacion(
+      publicacion.usuarioUid, 
+      usuarioId,              
+      publicacion.id,        
+      mensaje                 
+    );
+  }
+}
 
   async actualizarPublicacion(id: string, datos: any): Promise<void> {
     try {

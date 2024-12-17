@@ -119,14 +119,19 @@ export class PublicacionesComponent implements OnInit {
 
   agregarMeGusta(publicacion: any): void {
     const usuarioId = this.usuario.uid;
-    if (!publicacion.likes.includes(usuarioId)) {
-      publicacion.likes.push(usuarioId);
-      this.publicacionesService.actualizarPublicacion(publicacion.id, {
-        likes: publicacion.likes,
-      });
+  
+    if (!usuarioId) {
+      console.error('No hay un usuario autenticado.');
+      return;
     }
+  
+    this.publicacionesService.agregarMeGusta(publicacion, usuarioId)
+      .then(() => {
+        console.log('Me gusta agregado y notificación creada.');
+      })
+      .catch(error => console.error('Error al dar Me Gusta:', error));
   }
-
+  
   eliminarPublicacion(publicacionId: string): void {
     this.publicacionesService.eliminarPublicacion(publicacionId).then(() => {
       this.cargarPublicaciones();
