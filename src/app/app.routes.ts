@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { RecuperarClaveComponent } from './funcionalidades/autenticacion/recuperar-clave/recuperar-clave.component';
 import { ConfigurarPerfilGuard } from './core/guards/configurar-perfil.guard';
 import { EditarPerfilGuard } from './core/guards/editar-perfil.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -33,7 +34,7 @@ export const routes: Routes = [
       import(
         './funcionalidades/perfil/configurar-perfil/configurar-perfil.component'
       ).then((m) => m.ConfigurarPerfilComponent),
-    canActivate: [ConfigurarPerfilGuard],
+    canActivate: [ConfigurarPerfilGuard, authGuard],
   },
   {
     path: 'feed',
@@ -41,6 +42,7 @@ export const routes: Routes = [
       import('./funcionalidades/feed/feed/feed.component').then(
         (m) => m.FeedComponent
       ),
+    canActivate: [authGuard], 
     children: [
       {
         path: '',
@@ -53,6 +55,7 @@ export const routes: Routes = [
           import(
             './funcionalidades/feed/publicaciones/publicaciones.component'
           ).then((m) => m.PublicacionesComponent),
+        canActivate: [authGuard],
       },
       {
         path: 'perfil',
@@ -60,6 +63,7 @@ export const routes: Routes = [
           import(
             './funcionalidades/perfil/ver-perfil/ver-perfil.component'
           ).then((m) => m.VerPerfilComponent),
+        canActivate: [authGuard],
         children: [
           {
             path: 'editar',
@@ -67,7 +71,7 @@ export const routes: Routes = [
               import(
                 './funcionalidades/perfil/editar-perfil/editar-perfil.component'
               ).then((m) => m.EditarPerfilComponent),
-            canActivate: [EditarPerfilGuard], 
+            canActivate: [EditarPerfilGuard, authGuard], 
           },
         ],
       },
@@ -77,6 +81,7 @@ export const routes: Routes = [
           import('./funcionalidades/perfil/ver-perfil/ver-perfil.component').then(
             (m) => m.VerPerfilComponent
           ),
+        canActivate: [authGuard],
       },  
       {
         path: 'grupos',
@@ -84,6 +89,7 @@ export const routes: Routes = [
           import('./funcionalidades/feed/grupos/grupos.component').then(
             (m) => m.GruposComponent
           ),
+        canActivate: [authGuard],
       },
       {
         path: 'notificaciones',
@@ -91,7 +97,12 @@ export const routes: Routes = [
           import(
             './funcionalidades/feed/notificaciones/notificaciones.component'
           ).then((m) => m.NotificacionesComponent),
+        canActivate: [authGuard],
       },
     ],
   },
-]  
+  {
+    path: '**',
+    redirectTo: 'home',
+  },
+];

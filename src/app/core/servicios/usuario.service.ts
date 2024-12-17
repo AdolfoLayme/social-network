@@ -58,6 +58,9 @@ export class UsuarioService {
   getUsuarioActual(): Promise<User | null> {
     return new Promise((resolve) => {
       onAuthStateChanged(this.auth, (user) => resolve(user));
+      onAuthStateChanged(this.auth, (user) => {
+        resolve(user); 
+      });
     });
   }
 
